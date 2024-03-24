@@ -6,7 +6,7 @@
 <div>
     stats:
     <div *ngFor="let stat of (stats || [])" >
-        {{ stat.stat.name }}: {{ stat.base_stat }}
+        {{ stat.stat.name.toUpperCase() }}: {{ stat.base_stat }}
     </div>
     
 </div>
