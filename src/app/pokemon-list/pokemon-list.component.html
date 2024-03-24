@@ -1,0 +1,8 @@
+<div class="flex flex-wrap lg:max-w-[650px] justify-center">
+    <app-pokemon-thumbnail *ngFor="let pokemon of pokemonList" [pokemonName]="pokemon.name"></app-pokemon-thumbnail>
+
+</div>
+<button (click)="getNext()" class="m-4 p-2 bg-zinc-200 text-zinc-800">
+    <span *ngIf="!loading; else loadMore">Load more</span>
+    <ng-template #loadMore>Loading ... </ng-template>
+</button>
