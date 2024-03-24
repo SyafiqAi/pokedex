@@ -51,6 +51,6 @@ export class PokemonCardComponent {
     const language = 'en'
 
     this.description = pokemonSpecies.flavor_text_entries.filter(ft => {return ft.language.name === language})[0].flavor_text
-    this.species = pokemonSpecies.genera.filter(ft => {return ft.language.name === language})[0].genus;
+    this.species = pokemonSpecies.genera.filter(gene => {return gene.language.name === language})[0].genus;
   }
 }
