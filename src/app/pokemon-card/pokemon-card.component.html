@@ -1,0 +1,13 @@
+
+<p>Name: {{ name }}</p>
+<p>Species: {{ species }}</p>
+<p>Type: {{ type }}</p>
+<p>Desc: {{ description }}</p>
+<div>
+    stats:
+    <div *ngFor="let stat of (stats || [])" >
+        {{ stat.stat.name }}: {{ stat.base_stat }}
+    </div>
+    
+</div>
+<img [src]="picUrl" alt="">

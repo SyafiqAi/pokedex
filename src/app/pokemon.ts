@@ -9,10 +9,16 @@ export interface Pokemon {
             }
         }
     }
-    types: Array<{
+    types:{
         type: {
             name: string;
         }
-    }>
+    }[]
+    stats: {
+        base_stat: number;
+        stat: {
+            name: string;
+        }
+    }[]
     
 }

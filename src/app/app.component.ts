@@ -1,22 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { register } from 'swiper/element/bundle'
-import { SwiperContainer } from 'swiper/element/bundle';
-import { SwiperSlide } from 'swiper/element/bundle';
+import { CommonModule } from '@angular/common';
+import { PokemonCardComponent } from './pokemon-card/pokemon-card.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, CommonModule, PokemonCardComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'pokedex';
-  color = 'green';
-  navColor = 'rgb(0,0,0)'
-  ngOnInit() {
-    register();
-  }
-
 }
