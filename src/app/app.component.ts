@@ -13,7 +13,10 @@ import { SwiperSlide } from 'swiper/element/bundle';
 })
 export class AppComponent {
   title = 'pokedex';
+  color = 'green';
+  navColor = 'rgb(0,0,0)'
   ngOnInit() {
     register();
   }
+
 }

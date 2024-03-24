@@ -2,8 +2,11 @@
   Hello world!
 </h1>
 
-<swiper-container class="box-red w-48 h-24" loop="true" pagination="true" navigation="true" keyboard="true">
-  <swiper-slide>Slide 1</swiper-slide>
+<swiper-container class="bg-white box-red w-48 h-24 transition-colors duration-1000" loop="true" pagination="true" navigation="true" keyboard="true" 
+  [style]="{'--swiper-pagination-color': color}"
+  hideOnClick="true"
+>
+  <swiper-slide>SYAFIQ</swiper-slide>
   <swiper-slide>Slide 2</swiper-slide>
   <swiper-slide>Slide 3</swiper-slide>
 </swiper-container>
