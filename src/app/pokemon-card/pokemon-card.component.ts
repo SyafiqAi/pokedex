@@ -29,18 +29,28 @@ export class PokemonCardComponent {
     const routeParams = this.route.snapshot.paramMap;
     this.pokemonName = String(routeParams.get('pokemonName'));
 
-    this.pokedexService.getPokemon(this.pokemonName).subscribe(
-      pokemon => {
+    this.pokedexService.getPokemon(this.pokemonName).subscribe({
+      next: (pokemon: Pokemon) => {
         this.assignProperties(pokemon)
-        this.speciesName = pokemon.species.name;
 
+        this.speciesName = pokemon.species.name;
 
         this.pokedexService.getPokemonSpecies(this.speciesName).subscribe(
           pokemonSpecies => {
             this.assignSpeciesProperties(pokemonSpecies)
           })
       },
-    )
+      error: (error: any) => {
+
+        if(error.status === 404) {
+          alert('Pokemon not found.')
+        } else {
+          alert('Soemthing went wrong. Try again.');
+        }
+        console.log('error: ', error)
+        
+      }
+    })
 
   }
 
