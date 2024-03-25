@@ -32,7 +32,7 @@ export class PokedexService {
     if (nextUrl)
       return this.http.get<PokeapiResourceList>(nextUrl);
     else {
-      const pokemonPerLoad = 30;
+      const pokemonPerLoad = 60;
       const endpoint = `pokemon/?limit=${pokemonPerLoad}`;
       return this.http.get<PokeapiResourceList>(this.url + endpoint)    
     }

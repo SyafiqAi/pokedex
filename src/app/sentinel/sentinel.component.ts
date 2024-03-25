@@ -17,7 +17,7 @@ export class SentinelComponent {
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if(entry.isIntersecting) {this.inView.emit()}
-      })
+      }) 
     });
     const target = this.sentinel.nativeElement;
     this.observer.observe(target);

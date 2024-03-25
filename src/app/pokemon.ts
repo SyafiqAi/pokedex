@@ -6,6 +6,7 @@ export interface Pokemon {
         other:{
             'official-artwork': {
                 'front_default': string;
+                'front_shiny': string;
             }
         },
         front_default: string;
@@ -21,5 +22,7 @@ export interface Pokemon {
             name: string;
         }
     }[]
-    
+    species: {
+        name: string;
+    }
 }

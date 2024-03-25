@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { Pokemon } from '../pokemon';
 import { PokedexService } from '../pokedex.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-thumbnail',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './pokemon-thumbnail.component.html',
   styleUrl: './pokemon-thumbnail.component.css'
 })
