@@ -19,10 +19,10 @@ export class PokemonCardComponent {
   name = ''
   speciesName = ''
   picUrl = ''
-  type = ''
-  species = ''
+  type = ['']
+  genus = ''
   description = ''
-  stats: any[] | null = null
+  stats: {stat:{name:string}, base_stat:number}[] = [];
 
   pokemonName = ''
   ngOnInit() {
@@ -34,18 +34,14 @@ export class PokemonCardComponent {
         this.assignProperties(pokemon)
 
         this.speciesName = pokemon.species.name;
-
-        this.pokedexService.getPokemonSpecies(this.speciesName).subscribe(
-          pokemonSpecies => {
-            this.assignSpeciesProperties(pokemonSpecies)
-          })
+        this.getPokemonSpecies();
       },
       error: (error: any) => {
 
         if(error.status === 404) {
           alert('Pokemon not found.')
         } else {
-          alert('Soemthing went wrong. Try again.');
+          alert('Something went wrong. Try again.');
         }
         console.log('error: ', error)
         
@@ -54,10 +50,17 @@ export class PokemonCardComponent {
 
   }
 
+  getPokemonSpecies() {
+    this.pokedexService.getPokemonSpecies(this.speciesName).subscribe(
+      pokemonSpecies => {
+        this.assignSpeciesProperties(pokemonSpecies)
+      }
+    )
+  }
+
   assignProperties(pokemon: Pokemon): void {
-    this.name = pokemon.name;
     this.picUrl = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.other['official-artwork'].front_shiny;
-    this.type = pokemon.types[0].type.name;
+    this.type = pokemon.types.map(type => {return type.type.name})
     this.stats = pokemon.stats
   }
 
@@ -65,6 +68,7 @@ export class PokemonCardComponent {
     const language = 'en'
 
     this.description = pokemonSpecies.flavor_text_entries.filter(ft => { return ft.language.name === language })[0].flavor_text
-    this.species = pokemonSpecies.genera.filter(gene => { return gene.language.name === language })[0].genus;
+    this.genus = pokemonSpecies.genera.filter(gene => { return gene.language.name === language })[0].genus;
+    this.name = pokemonSpecies.names.filter(name => { return name.language.name === language })[0].name;
   }
 }

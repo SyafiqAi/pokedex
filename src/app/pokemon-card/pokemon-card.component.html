@@ -1,11 +1,11 @@
 
 <p>Name: {{ name }}</p>
-<p>Species: {{ species }}</p>
+<p>Species: {{ genus }}</p>
 <p>Type: {{ type }}</p>
 <p>Desc: {{ description }}</p>
 <div>
-    stats:
-    <div *ngFor="let stat of (stats || [])" >
+    Stats:
+    <div *ngFor="let stat of (stats || [])" class="ml-6">
         {{ stat.stat.name.toUpperCase() }}: {{ stat.base_stat }}
     </div>
     

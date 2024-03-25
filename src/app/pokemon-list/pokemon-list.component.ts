@@ -25,8 +25,4 @@ export class PokemonListComponent {
     })
   }
 
-  onInView() {
-    this.getNext();
-  }
-
 }

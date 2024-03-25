@@ -10,5 +10,11 @@ export interface PokemonSpecies {
         language: {
             name: string;
         }
+    }[],
+    names: {
+        language: {
+            name: string;
+        },
+        name: string;
     }[]
 }
