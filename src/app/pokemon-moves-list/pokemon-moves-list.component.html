@@ -1,12 +1,19 @@
 <swiper-container pagination-dynamic-bullets="true" pagination-type="fraction" dynamicMainBullets="4" keyboard pagination navigation 
 class="w-[50vw] h-[50vh] box-red *:flex *:justify-center *:items-center flex flex-col"
-    (swiperslidechange)="slideChange($event)" 
+    (swiperslidechange)="handleSlideChange($event)" 
     [style]="swiperStyles"
     grid-rows="2"
+    slides-per-view="1"
     >
-    @for (move of oshawottMoves; track move; let i = $index) {
-        <swiper-slide class="">
-            <div class="box-red" (click)="slideClicked(i)">{{ move.move.name }}</div>
+    @for (move of pokemonMoves; track move; let i = $index) {
+        <swiper-slide class="flex flex-col">
+            @if(move.moveDetails) {
+                <div class="box-red">{{ getMoveName(move.moveDetails) }}</div>
+                <div>
+                    type: {{ move.moveDetails.type.name }} <br>
+                    description: {{ getFlavorTextEntry(move.moveDetails) }} <br>
+                </div>
+            }
         </swiper-slide>
     }
 </swiper-container>

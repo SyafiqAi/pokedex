@@ -24,5 +24,11 @@ export interface Pokemon {
     }[]
     species: {
         name: string;
-    }
+    },
+    moves: {
+        move: {
+            name: string;
+            url: string;
+        }
+    }[]
 }
