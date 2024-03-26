@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { PokemonCardComponent } from './pokemon-card/pokemon-card.component';
 import { PokemonListComponent } from './pokemon-list/pokemon-list.component';
 import { RouterModule } from '@angular/router';
+import { register } from 'swiper/element/bundle';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -14,4 +16,8 @@ import { RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'pokédex';
+
+  ngOnInit() {
+    register();
+  }
 }

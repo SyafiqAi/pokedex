@@ -4,6 +4,7 @@ import { Pokemon } from './pokemon';
 import { PokemonSpecies } from './pokemon-species';
 import { PokemonNameAndUrl } from './pokemon-name-and-url';
 import { PokeapiResourceList } from './pokeapi-resource-list';
+import { PokemonMove } from './pokemon-move';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class PokedexService {
 
   private _pokemonUrl = 'https://pokeapi.co/api/v2/'
   private _pokemonList: PokemonNameAndUrl[] = [];
-  private _next: string = ''
+  private _nextPageUrl: string = ''
 
   public set pokemonList(nextList: PokemonNameAndUrl[]) {
     this._pokemonList.push(...nextList)
@@ -22,8 +23,8 @@ export class PokedexService {
   public updatePokemonList() {
     let url = '';
 
-    if (this._next){
-      url = this._next;
+    if (this._nextPageUrl){
+      url = this._nextPageUrl;
     } else {
       const pokemonPerLoad = '60';
       const endpoint = `pokemon/?limit=${pokemonPerLoad}`;
@@ -35,7 +36,7 @@ export class PokedexService {
       this.http.get<PokeapiResourceList>(url).subscribe({
         next: nextList => {
           this._pokemonList.push(...nextList.results)
-          this._next = nextList.next;
+          this._nextPageUrl = nextList.next;
         },
         error: error => {
           rej(error)
@@ -57,6 +58,10 @@ export class PokedexService {
   getPokemonSpecies(nameOrId: string|number) {
     const endpoint = `pokemon-species/${nameOrId}`
     return this.http.get<PokemonSpecies>(this._pokemonUrl + endpoint)
+  }
+
+  getPokemonMove(moveUrl: string) {
+    return this.http.get<PokemonMove>(moveUrl);
   }
 
 }
