@@ -14,6 +14,9 @@ class="w-[50vw] h-[50vh]  *:flex *:justify-center *:items-center flex flex-col"
                     description: {{ getFlavorTextEntry(move.moveDetails) || '-' }} <br>
                 </div>
             }
+            @else {
+                Loading...
+            }
         </swiper-slide>
     }
 </swiper-container>

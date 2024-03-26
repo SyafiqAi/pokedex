@@ -4,6 +4,7 @@ import { PokedexService } from '../pokedex.service';
 import { oshawott } from '../data/oshawott';
 import { PokemonMove } from '../pokemon-move';
 import { Pokemon } from '../pokemon';
+import { TextFormatterService } from '../text-formatter.service';
 
 @Component({
   selector: 'app-pokemon-moves-list',
@@ -71,7 +72,9 @@ export class PokemonMovesListComponent {
   getFlavorTextEntry(move: PokemonMove) {
     const language = 'en'
     try {
-      return move.flavor_text_entries?.filter(m => { return m.language.name == language })[0].flavor_text;
+      const text = move.flavor_text_entries?.filter(m => { return m.language.name == language })[0].flavor_text;
+      const formattedText = this.textFormatterService.removeUnwantedCharacters(text);
+      return formattedText;
     } catch (error) {
       return null
     }
@@ -81,13 +84,15 @@ export class PokemonMovesListComponent {
     const language = 'en'
 
     try {
-      return move.names?.filter(m => { return m.language.name == language })[0].name;
+      const text = move.names?.filter(m => { return m.language.name == language })[0].name;
+      const formattedText = this.textFormatterService.removeUnwantedCharacters(text);
+      return formattedText;
     } catch (error) {
       return null
     }
   }
 
-  constructor(private pokedexService: PokedexService) { }
+  constructor(private pokedexService: PokedexService, private textFormatterService: TextFormatterService) { }
 
 }
 

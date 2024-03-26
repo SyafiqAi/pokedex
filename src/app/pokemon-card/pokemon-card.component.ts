@@ -6,6 +6,7 @@ import { oshawott, oshawottSpecies } from '../data/oshawott'
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonMovesListComponent } from '../pokemon-moves-list/pokemon-moves-list.component';
+import { TextFormatterService } from '../text-formatter.service';
 
 @Component({
   selector: 'app-pokemon-card',
@@ -15,7 +16,7 @@ import { PokemonMovesListComponent } from '../pokemon-moves-list/pokemon-moves-l
   styleUrl: './pokemon-card.component.css'
 })
 export class PokemonCardComponent {
-  constructor(private pokedexService: PokedexService, private route: ActivatedRoute) { }
+  constructor(private pokedexService: PokedexService, private route: ActivatedRoute, private textFormatterService: TextFormatterService) { }
 
   pokemon!: Pokemon
   name = ''
@@ -72,5 +73,11 @@ export class PokemonCardComponent {
     this.description = pokemonSpecies.flavor_text_entries.filter(ft => { return ft.language.name === language })[0].flavor_text
     this.genus = pokemonSpecies.genera.filter(gene => { return gene.language.name === language })[0].genus;
     this.name = pokemonSpecies.names.filter(name => { return name.language.name === language })[0].name;
+    this.formatText();
   }
+
+  formatText() {
+    this.description = this.textFormatterService.removeUnwantedCharacters(this.description)
+  }
+  
 }
