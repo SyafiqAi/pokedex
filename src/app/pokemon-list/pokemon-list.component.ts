@@ -10,19 +10,21 @@ import { SentinelComponent } from '../sentinel/sentinel.component';
   standalone: true,
   imports: [PokemonThumbnailComponent, CommonModule, SentinelComponent],
   templateUrl: './pokemon-list.component.html',
-  styleUrl: './pokemon-list.component.css'
+  styleUrl: './pokemon-list.component.css',
+  providers: [PokedexService]
 })
 export class PokemonListComponent {
 
-  pokemonList: PokemonNameAndUrl[] = [];
+  sentinelMsg = 'loading...'
+  pokemonList: PokemonNameAndUrl[] = this.pokedexService.pokemonList;
   next = ''
   constructor(private pokedexService: PokedexService) { }
 
   getNext() {
-    this.pokedexService.getNextPokemonList(this.next).subscribe(nextList => {
-      this.pokemonList.push(...nextList.results)
-      this.next = nextList.next;
-    })
+    this.pokedexService.updatePokemonList()
+      .catch(err => {
+        this.sentinelMsg = 'Something went wrong.'
+      })
   }
 
 }
