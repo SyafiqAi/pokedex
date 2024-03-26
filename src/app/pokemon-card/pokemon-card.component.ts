@@ -5,17 +5,19 @@ import { PokemonSpecies } from '../pokemon-species';
 import { oshawott, oshawottSpecies } from '../data/oshawott'
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { PokemonMovesListComponent } from '../pokemon-moves-list/pokemon-moves-list.component';
 
 @Component({
   selector: 'app-pokemon-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PokemonMovesListComponent],
   templateUrl: './pokemon-card.component.html',
   styleUrl: './pokemon-card.component.css'
 })
 export class PokemonCardComponent {
   constructor(private pokedexService: PokedexService, private route: ActivatedRoute) { }
 
+  pokemon!: Pokemon
   name = ''
   speciesName = ''
   picUrl = ''
@@ -32,7 +34,7 @@ export class PokemonCardComponent {
     this.pokedexService.getPokemon(this.pokemonName).subscribe({
       next: (pokemon: Pokemon) => {
         this.assignProperties(pokemon)
-
+        this.pokemon = pokemon;
         this.speciesName = pokemon.species.name;
         this.getPokemonSpecies();
       },

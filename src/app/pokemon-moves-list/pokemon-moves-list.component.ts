@@ -15,7 +15,8 @@ import { Pokemon } from '../pokemon';
 })
 export class PokemonMovesListComponent {
 
-  // @Input() pokemon!: Pokemon;
+  @Input({required: true}) pokemon!: Pokemon;
+  pokemonMoves: any;
 
   color = 'pink'
   swiperStyles = {
@@ -25,15 +26,13 @@ export class PokemonMovesListComponent {
     '--swiper-navigation-color': this.color,
   }
 
-  oshawottMoves = oshawott.moves;
-  pokemonMoves = this.oshawottMoves.map((m:PokemonMoveReference) => {
-    return { ...m, moveDetails: (null as PokemonMove|null) }
-  })
-
   pokemonMovesLoaded = 0;
   pokemonMovesPerSlide = 2;
-
+  
   ngOnInit() {
+    this.pokemonMoves = this.pokemon.moves.map((m:PokemonMoveReference) => {
+      return { ...m, moveDetails: (null as PokemonMove|null) }
+    })
     const currentSlide = 1;
     this.loadSlides(currentSlide)
   }

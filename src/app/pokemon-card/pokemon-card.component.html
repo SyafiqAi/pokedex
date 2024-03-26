@@ -1,4 +1,4 @@
-
+<img [src]="picUrl" alt="">
 <p>Name: {{ name }}</p>
 <p>Species: {{ genus }}</p>
 <p>Type: {{ type }}</p>
@@ -10,4 +10,7 @@
     </div>
     
 </div>
-<img [src]="picUrl" alt="">
+
+@if (pokemon) {
+    <app-pokemon-moves-list [pokemon]="pokemon"></app-pokemon-moves-list>
+}
