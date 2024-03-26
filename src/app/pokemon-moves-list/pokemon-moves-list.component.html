@@ -1,5 +1,5 @@
 <swiper-container pagination-dynamic-bullets="true" pagination-type="fraction" dynamicMainBullets="4" keyboard pagination navigation 
-class="w-[50vw] h-[50vh] box-red *:flex *:justify-center *:items-center flex flex-col"
+class="w-[50vw] h-[50vh]  *:flex *:justify-center *:items-center flex flex-col"
     (swiperslidechange)="handleSlideChange($event)" 
     [style]="swiperStyles"
     grid-rows="2"
@@ -8,10 +8,10 @@ class="w-[50vw] h-[50vh] box-red *:flex *:justify-center *:items-center flex fle
     @for (move of pokemonMoves; track move; let i = $index) {
         <swiper-slide class="flex flex-col">
             @if(move.moveDetails) {
-                <div class="box-red">{{ getMoveName(move.moveDetails) }}</div>
+                <div class="">{{ getMoveName(move.moveDetails) }}</div>
                 <div>
                     type: {{ move.moveDetails.type.name }} <br>
-                    description: {{ getFlavorTextEntry(move.moveDetails) }} <br>
+                    description: {{ getFlavorTextEntry(move.moveDetails) || '-' }} <br>
                 </div>
             }
         </swiper-slide>

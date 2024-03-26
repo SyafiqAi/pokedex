@@ -15,8 +15,8 @@ import { Pokemon } from '../pokemon';
 })
 export class PokemonMovesListComponent {
 
-  @Input({required: true}) pokemon!: Pokemon;
-  pokemonMoves: any;
+  @Input({ required: true }) pokemon!: Pokemon;
+  pokemonMoves: PokemonMoveReference[] = [];
 
   color = 'pink'
   swiperStyles = {
@@ -28,13 +28,14 @@ export class PokemonMovesListComponent {
 
   pokemonMovesLoaded = 0;
   pokemonMovesPerSlide = 2;
-  
+
   ngOnInit() {
-    this.pokemonMoves = this.pokemon.moves.map((m:PokemonMoveReference) => {
-      return { ...m, moveDetails: (null as PokemonMove|null) }
+    this.pokemonMoves = this.pokemon.moves.map(m => {
+       return { ...m, moveDetails: null as PokemonMove | null } 
     })
     const currentSlide = 1;
     this.loadSlides(currentSlide)
+    console.log(this.pokemonMoves);
   }
 
   handleSlideChange(event: Event) {
@@ -58,7 +59,7 @@ export class PokemonMovesListComponent {
   }
 
   loadPokemonMove(index: number) {
-    const url = this.pokemonMoves[index].move.url
+    const url = (this.pokemonMoves[index] as PokemonMoveReference).move.url
     this.pokedexService.getPokemonMove(url).subscribe({
       next: moveDetails => {
         this.pokemonMoves[index].moveDetails = moveDetails;
@@ -69,12 +70,21 @@ export class PokemonMovesListComponent {
 
   getFlavorTextEntry(move: PokemonMove) {
     const language = 'en'
-    return move.flavor_text_entries.filter(m => { return m.language.name == language })[0].flavor_text;
+    try {
+      return move.flavor_text_entries?.filter(m => { return m.language.name == language })[0].flavor_text;
+    } catch (error) {
+      return null
+    }
   }
 
   getMoveName(move: PokemonMove) {
     const language = 'en'
-    return move.names.filter(m => { return m.language.name == language })[0].name;
+
+    try {
+      return move.names?.filter(m => { return m.language.name == language })[0].name;
+    } catch (error) {
+      return null
+    }
   }
 
   constructor(private pokedexService: PokedexService) { }
@@ -85,5 +95,6 @@ interface PokemonMoveReference {
   move: {
     name: string;
     url: string;
-  }
+  },
+  moveDetails: PokemonMove | null;
 }
