@@ -1,3 +1,13 @@
 <p>
-    type: {{ type }}
+    type: {{ types }}
 </p>
+<div class="box-red h-10 flex">
+    @for (type of types; track type; let i = $index) {
+        <div class="h-full relative">
+            <img (mouseenter)="showType[i]=true" (mouseleave)="showType[i]=false" [src]="getSvg(type)" alt="" class="size-full">
+            <div class="absolute w-full top-full flex justify-center">
+                <div class="box-red capitalize" [class.hidden]="!showType[i]">{{ type }}</div>
+            </div>
+        </div>
+    }
+</div>

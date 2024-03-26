@@ -1,5 +1,5 @@
 
-<app-pokemon-type-icon [type]="type"></app-pokemon-type-icon>
+<app-pokemon-type-icon *ngIf="type" [types]="type"></app-pokemon-type-icon>
 
 <div class="max-w-[400px] relative flex flex-col items-center overflow-hidden outline outline-zinc-900 outline-[20px] bg-zinc-900 rounded-[40px] scale-90">
     <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
