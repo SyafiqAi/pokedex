@@ -8,10 +8,11 @@ import { ActivatedRoute } from '@angular/router';
 import { PokemonMovesListComponent } from '../pokemon-moves-list/pokemon-moves-list.component';
 import { TextFormatterService } from '../text-formatter.service';
 import { styles } from '../utilities/pokemon-type-styles'
+import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon.component';
 @Component({
   selector: 'app-pokemon-card',
   standalone: true,
-  imports: [CommonModule, PokemonMovesListComponent],
+  imports: [CommonModule, PokemonMovesListComponent, PokemonTypeIconComponent],
   templateUrl: './pokemon-card.component.html',
   styleUrl: './pokemon-card.component.css'
 })
