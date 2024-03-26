@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonMovesListComponent } from '../pokemon-moves-list/pokemon-moves-list.component';
 import { TextFormatterService } from '../text-formatter.service';
-
+import { styles } from '../utilities/pokemon-type-styles'
 @Component({
   selector: 'app-pokemon-card',
   standalone: true,
@@ -18,6 +18,7 @@ import { TextFormatterService } from '../text-formatter.service';
 export class PokemonCardComponent {
   constructor(private pokedexService: PokedexService, private route: ActivatedRoute, private textFormatterService: TextFormatterService) { }
 
+
   pokemon!: Pokemon
   name = ''
   speciesName = ''
@@ -25,7 +26,9 @@ export class PokemonCardComponent {
   type = ['']
   genus = ''
   description = ''
-  stats: {stat:{name:string}, base_stat:number}[] = [];
+  // stats: {stat:{name:string}, base_stat:number}[] = [];
+  typeColor = ''
+  typeBg = ''
 
   pokemonName = ''
   ngOnInit() {
@@ -64,7 +67,10 @@ export class PokemonCardComponent {
   assignProperties(pokemon: Pokemon): void {
     this.picUrl = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.other['official-artwork'].front_shiny;
     this.type = pokemon.types.map(type => {return type.type.name})
-    this.stats = pokemon.stats
+    // this.stats = pokemon.stats
+    this.typeColor = this.type[0];
+    const fuckYou = this.type[0]
+    this.typeBg = (styles.bg as any)[this.type[0]]
   }
 
   assignSpeciesProperties(pokemonSpecies: PokemonSpecies): void {

@@ -1,16 +1,27 @@
-<img [src]="picUrl" alt="">
-<p>Name: {{ name }}</p>
-<p>Species: {{ genus }}</p>
-<p>Type: {{ type }}</p>
-<p>Desc: {{ description }}</p>
-<div>
-    Stats:
-    <div *ngFor="let stat of (stats || [])" class="ml-6">
-        {{ stat.stat.name.toUpperCase() }}: {{ stat.base_stat }}
+<div class="max-w-[400px] relative flex flex-col items-center overflow-hidden outline outline-zinc-900 outline-[20px] bg-zinc-900 rounded-[40px] scale-90">
+    <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
     </div>
+    <div class="w-full z-10 pt-4 px-8">
+        <p class="text-4xl font-black">{{ name }}</p>
+        <p>{{ genus }}</p>
+        <p>{{ type }}</p>
+    </div>
+    <img [src]="picUrl" [alt]="name" class="max-h-[300px] z-10">
     
+    <div class="w-[80%] flex justify-center">
+        <p>{{ description }}</p>
+    </div>
+    <!-- <div>
+        Stats:
+        <div *ngFor="let stat of (stats || [])" class="ml-6">
+            {{ stat.stat.name.toUpperCase() }}: {{ stat.base_stat }}
+        </div>
+        
+    </div> -->
+    
+    <div class="w-[80%]">
+        @if (pokemon) {
+            <app-pokemon-moves-list [pokemon]="pokemon"></app-pokemon-moves-list>
+        }
+    </div>
 </div>
-
-@if (pokemon) {
-    <app-pokemon-moves-list [pokemon]="pokemon"></app-pokemon-moves-list>
-}

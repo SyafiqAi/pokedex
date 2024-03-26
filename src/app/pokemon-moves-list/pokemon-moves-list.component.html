@@ -1,22 +1,11 @@
-<swiper-container pagination-dynamic-bullets="true" pagination-type="fraction" dynamicMainBullets="4" keyboard pagination navigation 
-class="w-[50vw] h-[50vh]  *:flex *:justify-center *:items-center flex flex-col"
-    (swiperslidechange)="handleSlideChange($event)" 
-    [style]="swiperStyles"
-    grid-rows="2"
-    slides-per-view="1"
-    >
+<div class="h-[200px] my-4 overflow-auto">
     @for (move of pokemonMoves; track move; let i = $index) {
-        <swiper-slide class="flex flex-col">
-            @if(move.moveDetails) {
-                <div class="">{{ getMoveName(move.moveDetails) }}</div>
-                <div>
-                    type: {{ move.moveDetails.type.name }} <br>
-                    description: {{ getFlavorTextEntry(move.moveDetails) || '-' }} <br>
-                </div>
-            }
-            @else {
-                Loading...
-            }
-        </swiper-slide>
+        @if(move.moveDetails) {
+        <div class="box-red h-fit my-11 first:mt-5">
+            {{ move.moveDetails.type.name }}:
+            {{ getMoveName(move.moveDetails) }} <br>
+            {{ getFlavorTextEntry(move.moveDetails) || '-' }} <br>
+        </div>
+        }
     }
-</swiper-container>
+</div>

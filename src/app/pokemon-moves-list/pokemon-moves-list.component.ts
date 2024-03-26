@@ -19,7 +19,7 @@ export class PokemonMovesListComponent {
   @Input({ required: true }) pokemon!: Pokemon;
   pokemonMoves: PokemonMoveReference[] = [];
 
-  color = 'pink'
+  color = 'white'
   swiperStyles = {
     '--swiper-pagination-color': this.color,
     '--swiper-pagination-bullet-inactive-color': 'white',
