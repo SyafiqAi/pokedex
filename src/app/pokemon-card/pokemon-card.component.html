@@ -1,6 +1,6 @@
 
 
-<div class="max-w-[400px] relative flex flex-col items-center overflow-hidden outline outline-zinc-900 outline-[20px] bg-zinc-900 rounded-[40px] lg:scale-90 scale-[0.85]">
+<div class="w-[440px] relative flex flex-col items-center overflow-hidden border-zinc-900 border-[20px] bg-zinc-900 rounded-[60px] lg:scale-90 scale-[0.85]">
     <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
     </div>
     <div class="w-full z-10 pt-4 px-8 flex justify-between items-center">
@@ -8,8 +8,8 @@
             <p class="text-4xl font-black">{{ name }}</p>
             <p>{{ genus }}</p>
         </div>
-        <div class="flex">
-            @for (type of types.reverse(); track $index) {
+        <div class="flex h-14">
+            @for (type of types; track $index) {
                 <app-pokemon-type-icon *ngIf="type" [type]="type" [reverseColor]="true"></app-pokemon-type-icon>
             }
         </div>
@@ -27,7 +27,7 @@
         
     </div> -->
     
-    <div class="w-[80%]">
+    <div class="w-full">
         @if (pokemon) {
             <app-pokemon-moves-list [pokemon]="pokemon"></app-pokemon-moves-list>
         }

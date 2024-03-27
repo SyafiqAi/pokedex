@@ -5,11 +5,12 @@ import { oshawott } from '../data/oshawott';
 import { PokemonMove } from '../pokemon-move';
 import { Pokemon } from '../pokemon';
 import { TextFormatterService } from '../text-formatter.service';
+import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon.component';
 
 @Component({
   selector: 'app-pokemon-moves-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PokemonTypeIconComponent],
   templateUrl: './pokemon-moves-list.component.html',
   styleUrl: './pokemon-moves-list.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
