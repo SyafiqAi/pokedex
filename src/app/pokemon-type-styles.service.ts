@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { PokemonTypes } from './pokemon-types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonTypeStylesService {
 
-  private _styles = {
+  private _styles:{bg:PokemonTypes, text:PokemonTypes} = {
     "bg": {
       "normal": "bg-normal",
       "bug": "bg-bug",
