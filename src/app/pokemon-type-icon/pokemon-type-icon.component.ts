@@ -1,5 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-
+import styles from '../utilities/pokemon-type-styles.json';
+import { PokemonTypes } from '../pokemon-types';
 @Component({
   selector: 'app-pokemon-type-icon',
   standalone: true,
@@ -8,28 +9,21 @@ import { Component, Input, SimpleChanges } from '@angular/core';
   styleUrl: './pokemon-type-icon.component.css'
 })
 export class PokemonTypeIconComponent {
-  @Input({ required: true }) types!: string[];
+  @Input({ required: true }) type!: string;
+  @Input() reverseColor = false;
 
-  showType: boolean[] = []
-  
-  ngOnInit() {
-    this.showType = Array(this.types.length);
-    this.showType.fill(false);
+  showType: boolean = false;
+  private _styles = ''
+
+  public get styles() {
+    if(this.reverseColor)
+      return `${(styles.text as any)[this.type]} bg-white`
+    else 
+      return `${(styles.bg as any)[this.type]} text-white`
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['types']) {
-      let variableChange = changes['types'];
-      if (variableChange.firstChange) {
-        return;
-      }
-      console.log(variableChange)
-      this.types = variableChange.currentValue.reverse();
-    }
-  }
-
-  getSvg(type: string) {
-    return `../../assets/pokemon-type-icons/${type}.svg`
+  getSvg() {
+    return `../../assets/pokemon-type-icons/${this.type}.svg`
   }
 
 }

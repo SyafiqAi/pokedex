@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonMovesListComponent } from '../pokemon-moves-list/pokemon-moves-list.component';
 import { TextFormatterService } from '../text-formatter.service';
-import { styles } from '../utilities/pokemon-type-styles'
+import styles from '../utilities/pokemon-type-styles.json'
 import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon.component';
 @Component({
   selector: 'app-pokemon-card',
@@ -24,7 +24,7 @@ export class PokemonCardComponent {
   name = ''
   speciesName = ''
   picUrl = ''
-  type = ['']
+  types = ['']
   genus = ''
   description = ''
   // stats: {stat:{name:string}, base_stat:number}[] = [];
@@ -67,11 +67,15 @@ export class PokemonCardComponent {
 
   assignProperties(pokemon: Pokemon): void {
     this.picUrl = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.other['official-artwork'].front_shiny;
-    this.type = pokemon.types.map(type => {return type.type.name})
-    // this.stats = pokemon.stats
-    this.typeColor = this.type[0];
-    const fuckYou = this.type[0]
-    this.typeBg = (styles.bg as any)[this.type[0]]
+    this.types = pokemon.types.map(type => {return type.type.name})
+
+    // if possible show non-normal color.
+    // the normal color looks a bit bland.
+    if(this.types[0] == 'normal') {
+      this.types = this.types.reverse();
+    }
+    this.typeColor = this.types[0];
+    this.typeBg = (styles.bg as any)[this.types[0]]
   }
 
   assignSpeciesProperties(pokemonSpecies: PokemonSpecies): void {

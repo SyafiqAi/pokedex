@@ -1,17 +1,22 @@
 
-<app-pokemon-type-icon *ngIf="type" [types]="type"></app-pokemon-type-icon>
 
-<div class="max-w-[400px] relative flex flex-col items-center overflow-hidden outline outline-zinc-900 outline-[20px] bg-zinc-900 rounded-[40px] scale-90">
+<div class="max-w-[400px] relative flex flex-col items-center overflow-hidden outline outline-zinc-900 outline-[20px] bg-zinc-900 rounded-[40px] lg:scale-90 scale-[0.85]">
     <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
     </div>
-    <div class="w-full z-10 pt-4 px-8">
-        <p class="text-4xl font-black">{{ name }}</p>
-        <p>{{ genus }}</p>
-        <p>{{ type }}</p>
+    <div class="w-full z-10 pt-4 px-8 flex justify-between items-center">
+        <div>
+            <p class="text-4xl font-black">{{ name }}</p>
+            <p>{{ genus }}</p>
+        </div>
+        <div class="flex">
+            @for (type of types; track $index) {
+                <app-pokemon-type-icon *ngIf="type" [type]="type" [reverseColor]="true"></app-pokemon-type-icon>
+            }
+        </div>
     </div>
-    <img [src]="picUrl" [alt]="name" class="max-h-[300px] z-10">
+    <img [src]="picUrl||null" [alt]="name" class="max-h-[300px] z-[9]">
     
-    <div class="w-[80%] flex justify-center">
+    <div class="w-[80%] flex justify-center text-justify">
         <p>{{ description }}</p>
     </div>
     <!-- <div>
