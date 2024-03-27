@@ -27,21 +27,19 @@ export class PokemonCardComponent {
 
   pokemon!: Pokemon
   pokemonSpecies: PokemonSpecies|null = null;
-  speciesName = ''
   // stats: {stat:{name:string}, base_stat:number}[] = [];
   styles;
 
 
-  pokemonName = ''
   ngOnInit() {
     const routeParams = this.route.snapshot.paramMap;
-    this.pokemonName = String(routeParams.get('pokemonName'));
+    const pokemonName = String(routeParams.get('pokemonName'));
 
-    this.pokedexService.getPokemon(this.pokemonName).subscribe({
+    this.pokedexService.getPokemon(pokemonName).subscribe({
       next: (pokemon: Pokemon) => {
         this.pokemon = pokemon
-        this.speciesName = pokemon.species.name;
-        this.getPokemonSpecies();
+        const speciesName = pokemon.species.name;
+        this.getPokemonSpecies(speciesName);
       },
       error: (error: any) => {
 
@@ -57,8 +55,8 @@ export class PokemonCardComponent {
 
   }
 
-  getPokemonSpecies() {
-    this.pokedexService.getPokemonSpecies(this.speciesName).subscribe(
+  getPokemonSpecies(speciesName: string) {
+    this.pokedexService.getPokemonSpecies(speciesName).subscribe(
       pokemonSpecies => {
         this.pokemonSpecies = pokemonSpecies;
       }
@@ -96,11 +94,11 @@ export class PokemonCardComponent {
     return this.styles.bg['normal'];
   }
 
-  public get name () {
+  public get pokemonName () {
     if(this.pokemonSpecies) {
       const names = this.pokemonSpecies.names;
-      const name = this.englishTextOnly(names)[0].name;
-      return name;
+      const pokemonName = this.englishTextOnly(names)[0].name;
+      return pokemonName;
     }
     return null;
   }
