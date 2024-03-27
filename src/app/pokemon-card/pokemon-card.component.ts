@@ -1,4 +1,4 @@
-import { Component, effect } from '@angular/core';
+import { Component, Input, SimpleChanges, effect } from '@angular/core';
 import { PokedexService } from '../pokedex.service';
 import { Pokemon } from '../pokemon';
 import { PokemonSpecies } from '../pokemon-species';
@@ -18,10 +18,11 @@ import { PokemonTypeIconListComponent } from '../pokemon-type-icon-list/pokemon-
   styleUrl: './pokemon-card.component.css'
 })
 export class PokemonCardComponent {
-  constructor(private pokedexService: PokedexService, private route: ActivatedRoute, private textFormatterService: TextFormatterService, private pokemonStylesService: PokemonTypeStylesService) { 
+  constructor(private pokedexService: PokedexService, private route: ActivatedRoute, private textFormatterService: TextFormatterService, private pokemonStylesService: PokemonTypeStylesService) {
     this.styles = pokemonStylesService.styles
   }
 
+  @Input({ required: true }) pokemonId!: string;
 
   pokemon!: Pokemon
   name = ''
@@ -35,12 +36,12 @@ export class PokemonCardComponent {
   typeBg = ''
   styles;
 
-
-  pokemonId = ''
-  ngOnInit() {
-    const routeParams = this.route.snapshot.paramMap;
-    this.pokemonId = String(routeParams.get('pokemonId'));
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['pokemonId'].currentValue)
+      this.makeCard();
+  }
+  
+  makeCard() {
     this.pokedexService.getPokemon(this.pokemonId).subscribe({
       next: (pokemon: Pokemon) => {
         this.assignProperties(pokemon)
@@ -50,16 +51,15 @@ export class PokemonCardComponent {
       },
       error: (error: any) => {
 
-        if(error.status === 404) {
+        if (error.status === 404) {
           alert('Pokemon not found.')
         } else {
           alert('Something went wrong. Try again.');
         }
         console.log('error: ', error)
-        
+
       }
     })
-
   }
 
   getPokemonSpecies() {
@@ -72,11 +72,11 @@ export class PokemonCardComponent {
 
   assignProperties(pokemon: Pokemon): void {
     this.picUrl = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.other['official-artwork'].front_shiny;
-    this.types = pokemon.types.map(type => {return type.type.name})
+    this.types = pokemon.types.map(type => { return type.type.name })
 
     // if possible show non-normal color.
     // the normal color looks a bit bland.
-    if(this.types[0] == 'normal') {
+    if (this.types[0] == 'normal') {
       this.types = this.types.reverse();
     }
     this.typeColor = this.types[0];
@@ -95,5 +95,5 @@ export class PokemonCardComponent {
   formatText() {
     this.description = this.textFormatterService.removeUnwantedCharacters(this.description)
   }
-  
+
 }

@@ -1,0 +1,18 @@
+<div class="w-20 min-h-16 flex justify-center">
+    
+    @if (pokemonId > 1) {
+        <a
+        [routerLink]="['/pokemon', prevPokemon]">
+        
+        prev
+        
+        </a>
+    }
+    
+    <a
+    [routerLink]="['/pokemon', nextPokemon]">
+    
+    next
+    </a>
+
+</div>

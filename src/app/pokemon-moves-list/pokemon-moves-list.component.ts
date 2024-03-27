@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, Input, SimpleChanges } from '@angular/core';
 import { PokedexService } from '../pokedex.service';
 import { oshawott } from '../data/oshawott';
 import { PokemonMove } from '../pokemon-move';
@@ -20,13 +20,14 @@ export class PokemonMovesListComponent {
   @Input({ required: true }) pokemon!: Pokemon;
   pokemonMoves: PokemonMoveReference[] = [];
 
-  ngOnInit() {
-    this.pokemonMoves = this.pokemon.moves.map(m => {
-       return { ...m, moveDetails: null as PokemonMove | null } 
-    })
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['pokemon'].currentValue) {
+      this.pokemonMoves = this.pokemon.moves.map(m => {
+        return { ...m, moveDetails: null as PokemonMove | null }
+      })
 
-    this.getAllMoveDetails();
-    
+      this.getAllMoveDetails();
+    }
   }
 
   getAllMoveDetails() {
@@ -35,10 +36,10 @@ export class PokemonMovesListComponent {
     })
   }
 
-  loadPokemonMove(pokemonMove: PokemonMoveReference)  {
+  loadPokemonMove(pokemonMove: PokemonMoveReference) {
     const url = (pokemonMove as PokemonMoveReference).move.url
     this.pokedexService.getPokemonMove(url).subscribe({
-      next:(moveDetails: PokemonMove) => {
+      next: (moveDetails: PokemonMove) => {
         return pokemonMove.moveDetails = moveDetails;
       }
     })
