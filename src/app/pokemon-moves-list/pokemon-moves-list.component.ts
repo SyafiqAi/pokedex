@@ -20,54 +20,28 @@ export class PokemonMovesListComponent {
   @Input({ required: true }) pokemon!: Pokemon;
   pokemonMoves: PokemonMoveReference[] = [];
 
-  color = 'white'
-  swiperStyles = {
-    '--swiper-pagination-color': this.color,
-    '--swiper-pagination-bullet-inactive-color': 'white',
-    '--swiper-pagination-bullet-inactive-opacity': '0.2',
-    '--swiper-navigation-color': this.color,
-  }
-
-  pokemonMovesLoaded = 0;
-  pokemonMovesPerSlide = 2;
-
   ngOnInit() {
     this.pokemonMoves = this.pokemon.moves.map(m => {
        return { ...m, moveDetails: null as PokemonMove | null } 
     })
-    const currentSlide = 1;
-    this.loadSlides(currentSlide)
-    console.log(this.pokemonMoves);
+
+    this.getAllMoveDetails();
+    
   }
 
-  handleSlideChange(event: Event) {
-    const currentIndex = (event as CustomEvent).detail[0].activeIndex
-    const currentSlide = currentIndex + 1;
-
-    this.loadSlides(currentSlide);
+  getAllMoveDetails() {
+    this.pokemonMoves.forEach(move => {
+      this.loadPokemonMove(move)
+    })
   }
 
-  loadSlides(slideInView: number) {
-    let slidesLoaded = this.pokemonMovesLoaded / this.pokemonMovesPerSlide;
-    let currentPokemonMoveIndex = this.pokemonMovesLoaded;
-
-    const standbySlides = 3;
-    while (slidesLoaded < slideInView + standbySlides && currentPokemonMoveIndex < this.pokemonMoves.length) {
-      console.log(currentPokemonMoveIndex);
-      this.loadPokemonMove(currentPokemonMoveIndex)
-      currentPokemonMoveIndex++;
-      slidesLoaded = this.pokemonMovesLoaded / this.pokemonMovesPerSlide;
-    }
-  }
-
-  loadPokemonMove(index: number) {
-    const url = (this.pokemonMoves[index] as PokemonMoveReference).move.url
+  loadPokemonMove(pokemonMove: PokemonMoveReference)  {
+    const url = (pokemonMove as PokemonMoveReference).move.url
     this.pokedexService.getPokemonMove(url).subscribe({
-      next: moveDetails => {
-        this.pokemonMoves[index].moveDetails = moveDetails;
+      next:(moveDetails: PokemonMove) => {
+        return pokemonMove.moveDetails = moveDetails;
       }
     })
-    this.pokemonMovesLoaded++;
   }
 
   getFlavorTextEntry(move: PokemonMove) {
