@@ -36,12 +36,12 @@ export class PokemonCardComponent {
   styles;
 
 
-  pokemonName = ''
+  pokemonId = ''
   ngOnInit() {
     const routeParams = this.route.snapshot.paramMap;
-    this.pokemonName = String(routeParams.get('pokemonName'));
+    this.pokemonId = String(routeParams.get('pokemonId'));
 
-    this.pokedexService.getPokemon(this.pokemonName).subscribe({
+    this.pokedexService.getPokemon(this.pokemonId).subscribe({
       next: (pokemon: Pokemon) => {
         this.assignProperties(pokemon)
         this.pokemon = pokemon;

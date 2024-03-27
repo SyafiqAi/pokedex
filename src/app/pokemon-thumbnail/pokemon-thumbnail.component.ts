@@ -15,6 +15,7 @@ export class PokemonThumbnailComponent {
   pokemon: Pokemon | null = null
   picUrl = ''
   name = '';
+  id = '';
 
   ngOnInit() {
     this.pokedexService.getPokemon(this.pokemonName).subscribe(value => {
@@ -22,8 +23,8 @@ export class PokemonThumbnailComponent {
       // this.picUrl = this.pokemon.sprites.other['official-artwork'].front_default;
       this.picUrl = this.pokemon.sprites.front_default;
       this.name = this.pokemon.name;
+      this.id = this.pokemon.id.toString();
     })
-    
   }
 
 
