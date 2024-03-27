@@ -30,6 +30,7 @@ export class PokemonCardComponent {
   pokemonSpecies: PokemonSpecies|null = null;
   // stats: {stat:{name:string}, base_stat:number}[] = [];
   styles;
+  loading = true;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pokemonId'].currentValue)
@@ -37,6 +38,7 @@ export class PokemonCardComponent {
   }
   
   makeCard() {
+    this.loading = true;
     this.pokedexService.getPokemon(this.pokemonId).subscribe({
       next: (pokemon: Pokemon) => {
         this.pokemon = pokemon
@@ -44,24 +46,25 @@ export class PokemonCardComponent {
         this.getPokemonSpecies(speciesName);
       },
       error: (error: any) => {
+        this.handleError(error);
 
-        if (error.status === 404) {
-          alert('Pokemon not found.')
-        } else {
-          alert('Something went wrong. Try again.');
-        }
-        console.log('error: ', error)
-
+        this.loading = false;
       }
     })
   }
 
   getPokemonSpecies(speciesName: string) {
-    this.pokedexService.getPokemonSpecies(speciesName).subscribe(
-      pokemonSpecies => {
+    this.pokedexService.getPokemonSpecies(speciesName).subscribe({
+      next: (pokemonSpecies: PokemonSpecies) => {
         this.pokemonSpecies = pokemonSpecies;
+      },
+      error: (error: any) => {
+        this.handleError(error);
+      },
+      complete: () => {
+        this.loading = false;
       }
-    )
+    })
   }
 
   public get types() {
@@ -126,6 +129,16 @@ export class PokemonCardComponent {
   private englishTextOnly<T extends multipleLanguages>(arr: T[]) {
     let englishOnlyArr = arr.filter(ft => { return ft.language.name === this.language })
     return englishOnlyArr;
+  }
+
+  private handleError(error: any) {
+    
+    if (error.status === 404) {
+      alert('Pokemon not found.')
+    } else {
+      alert('Something went wrong. Try again.');
+    }
+    console.log('error: ', error)
   }
 }
 

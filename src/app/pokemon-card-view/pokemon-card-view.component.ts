@@ -11,25 +11,23 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './pokemon-card-view.component.css'
 })
 export class PokemonCardViewComponent {
-  constructor(private route:ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) { }
 
   pokemonId = 0
 
   ngOnInit() {
-    const routeParams = this.route.snapshot.paramMap;
-    this.pokemonId = Number(routeParams.get('pokemonId'))
+    console.log('hello')
+    // const routeParams = this.route.snapshot.paramMap;
+    // this.pokemonId = Number(routeParams.get('pokemonId'));
+    this.route.paramMap
+      .subscribe((params) => {
+        this.pokemonId = Number(params.get('pokemonId'));
+        console.log('param : ', this.pokemonId)
+      });
   }
 
-  toString(n:number) {
+
+  toString(n: number) {
     return String(n)
   }
-
-  next() {
-    this.pokemonId = this.pokemonId + 1;
-  }
-
-  prev() {
-    this.pokemonId--
-  }
-
 }

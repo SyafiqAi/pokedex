@@ -1,26 +1,31 @@
-
-
-<div class="w-[440px] relative flex flex-col items-center overflow-hidden border-zinc-900 border-[20px] bg-zinc-900 rounded-[60px] lg:scale-100 scale-[0.85]">
-    <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
-    </div>
-    <div class="w-full z-10 pt-4 px-8 flex justify-between items-center">
-        <div>
-            <p class="text-4xl font-black">{{ pokemonName }}</p>
-            <p>{{ genus }}</p>
+<div
+    class="w-[440px] min-h-[700px] relative flex flex-col items-center overflow-hidden border-zinc-900 border-[20px] bg-zinc-900 rounded-[60px] lg:scale-100 scale-[0.85]">
+    @if (loading) {
+        <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right bg-gray-600 animate-pulse">
         </div>
-        <div class="h-14">
-            <app-pokemon-type-icon-list [types]="types"></app-pokemon-type-icon-list>
+    }
+    @else {
+        <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
         </div>
-    </div>
-    <img [src]="picUrl||null" [alt]="pokemonName" class="max-h-[300px] z-[9]">
+        <div class="w-full z-10 pt-4 px-8 flex justify-between items-center">
+            <div>
+                <p class="text-4xl font-black">{{ pokemonName }}</p>
+                <p>{{ genus }}</p>
+            </div>
+            <div class="h-14">
+                <app-pokemon-type-icon-list [types]="types"></app-pokemon-type-icon-list>
+            </div>
+        </div>
+        <img [src]="picUrl||null" [alt]="pokemonName" class="h-[300px] z-[9]">
     
-    <div class="w-[90%] flex justify-center text-justify">
-        <p>{{ description }}</p>
-    </div>
+        <div class="w-[90%] flex justify-center text-justify h-12">
+            <p>{{ description }}</p>
+        </div>
     
-    <div class="w-full">
-        @if (pokemon) {
+        <div class="w-full">
+            @if (pokemon) {
             <app-pokemon-moves-list [pokemon]="pokemon"></app-pokemon-moves-list>
-        }
-    </div>
+            }
+        </div>
+    }
 </div>

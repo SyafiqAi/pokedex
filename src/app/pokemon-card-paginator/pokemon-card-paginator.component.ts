@@ -15,12 +15,9 @@ export class PokemonCardPaginatorComponent {
   pokemonId: number = 0;
   
   ngOnInit() {
-    const routeParams = this.route.snapshot.paramMap;
-    this.pokemonId = Number(routeParams.get('pokemonId'));
       this.route.paramMap
         .subscribe((params) => {
           this.pokemonId = Number(params.get('pokemonId'));
-          // Get the related products here, or any other logic that depends on the params
         });
   }
 
