@@ -8,7 +8,29 @@
         @apply bg-black text-white;
 
     }
+
     .box-red {
         @apply border border-red-500
     }
+
+    /* width */
+    ::-webkit-scrollbar {
+        @apply sm:w-2;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        @apply bg-zinc-950
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        @apply bg-zinc-800
+    }
+    
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-zinc-700
+    }
+
 }

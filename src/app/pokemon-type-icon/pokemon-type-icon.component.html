@@ -1,6 +1,6 @@
 <div class="h-full relative">
     <img (mouseenter)="showType=true" (mouseleave)="showType=false" [src]="getSvg()" alt="" class="size-full">
     <div class="absolute w-full top-[calc(100%+5px)] flex justify-center">
-        <div class="capitalize rounded-3xl p-3 font-bold" [class]="styles" [class.hidden]="!showType">{{ type }}</div>
+        <div class="capitalize rounded-3xl p-3 font-bold" [class]="tooltipStyles" [class.hidden]="!showType">{{ type }}</div>
     </div>
 </div>

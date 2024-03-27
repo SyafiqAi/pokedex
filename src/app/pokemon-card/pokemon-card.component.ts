@@ -7,8 +7,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonMovesListComponent } from '../pokemon-moves-list/pokemon-moves-list.component';
 import { TextFormatterService } from '../text-formatter.service';
-import styles from '../utilities/pokemon-type-styles.json'
 import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon.component';
+import { PokemonTypeStylesService } from '../pokemon-type-styles.service';
 @Component({
   selector: 'app-pokemon-card',
   standalone: true,
@@ -17,7 +17,9 @@ import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon
   styleUrl: './pokemon-card.component.css'
 })
 export class PokemonCardComponent {
-  constructor(private pokedexService: PokedexService, private route: ActivatedRoute, private textFormatterService: TextFormatterService) { }
+  constructor(private pokedexService: PokedexService, private route: ActivatedRoute, private textFormatterService: TextFormatterService, private pokemonStylesService: PokemonTypeStylesService) { 
+    this.styles = pokemonStylesService.styles
+  }
 
 
   pokemon!: Pokemon
@@ -30,6 +32,8 @@ export class PokemonCardComponent {
   // stats: {stat:{name:string}, base_stat:number}[] = [];
   typeColor = ''
   typeBg = ''
+  styles;
+
 
   pokemonName = ''
   ngOnInit() {
@@ -75,7 +79,7 @@ export class PokemonCardComponent {
       this.types = this.types.reverse();
     }
     this.typeColor = this.types[0];
-    this.typeBg = (styles.bg as any)[this.types[0]]
+    this.typeBg = (this.styles.bg as any)[this.types[0]]
   }
 
   assignSpeciesProperties(pokemonSpecies: PokemonSpecies): void {

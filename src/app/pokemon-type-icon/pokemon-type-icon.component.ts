@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import styles from '../utilities/pokemon-type-styles.json';
 import { PokemonTypes } from '../pokemon-types';
+import { PokemonTypeStylesService } from '../pokemon-type-styles.service';
 @Component({
   selector: 'app-pokemon-type-icon',
   standalone: true,
@@ -12,16 +12,21 @@ export class PokemonTypeIconComponent {
   @Input({ required: true }) type!: string;
   @Input() reverseColor = false;
 
-  showType: boolean = false;
-  private _styles = ''
-
-  public get styles() {
-    if(this.reverseColor)
-      return `${(styles.text as any)[this.type]} bg-white`
-    else 
-      return `${(styles.bg as any)[this.type]} text-white`
+  constructor(private pokemonTypeStylesService: PokemonTypeStylesService) {
+    this.styles = this.pokemonTypeStylesService.styles
   }
 
+  showType: boolean = false;
+  styles;
+  tooltipStyles: string = '';
+  
+  ngOnInit() {
+    if(this.reverseColor)
+      this.tooltipStyles =  `${(this.styles.text as any)[this.type]} bg-white`
+    else 
+      this.tooltipStyles =  `${(this.styles.bg as any)[this.type]} text-white`
+  }
+  
   getSvg() {
     return `../../assets/pokemon-type-icons/${this.type}.svg`
   }
