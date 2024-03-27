@@ -1,0 +1,14 @@
+@if(types[0] && types.length > 1) {
+<div class="flex flex-row-reverse h-full" (mouseenter)="spreadIcons = true" (mouseleave)="spreadIcons = false">
+    @for (type of types; track $index) {
+    <div class="h-full transition-transform first:z-10" [class]="{'last:translate-x-7': !this.spreadIcons}">
+        <app-pokemon-type-icon [type]="type" [reverseColor]="true"></app-pokemon-type-icon>
+    </div>
+    }
+</div>
+}
+@else if(types[0]) {
+    <div class="h-full transition-transform first:z-10">
+        <app-pokemon-type-icon [type]="types[0]" [reverseColor]="true"></app-pokemon-type-icon>
+    </div>
+}

@@ -9,10 +9,11 @@ import { PokemonMovesListComponent } from '../pokemon-moves-list/pokemon-moves-l
 import { TextFormatterService } from '../text-formatter.service';
 import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon.component';
 import { PokemonTypeStylesService } from '../pokemon-type-styles.service';
+import { PokemonTypeIconListComponent } from '../pokemon-type-icon-list/pokemon-type-icon-list.component';
 @Component({
   selector: 'app-pokemon-card',
   standalone: true,
-  imports: [CommonModule, PokemonMovesListComponent, PokemonTypeIconComponent],
+  imports: [CommonModule, PokemonMovesListComponent, PokemonTypeIconComponent, PokemonTypeIconListComponent],
   templateUrl: './pokemon-card.component.html',
   styleUrl: './pokemon-card.component.css'
 })
