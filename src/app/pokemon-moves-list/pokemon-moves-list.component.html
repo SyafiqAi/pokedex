@@ -1,7 +1,7 @@
-<div class="h-[200px] my-4 overflow-y-auto">
+<div class="h-[180px] my-4 overflow-y-auto scale-90 origin-center">
     @for (move of pokemonMoves; track move; let i = $index) {
     @if(move.moveDetails) {
-    <div class="flex justify-center my-12 first:mt-6">
+    <div class="flex justify-center my-7 first:mt-0">
         <div class="h-fit flex items-center w-[80%]">
             <div class="size-11 mr-6">
                 <app-pokemon-type-icon [type]="move.moveDetails.type.name"></app-pokemon-type-icon>

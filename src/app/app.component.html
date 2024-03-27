@@ -1,12 +1,9 @@
+<h1 class="text-3xl font-bold underline">
+  <a [routerLink]="['']" class="capitalize">
+    {{ title }}
+  </a>
+</h1>
 
-<div class="min-h-svh overflow-x-hidden">
-  <h1 class="text-3xl font-bold underline">
-    <a [routerLink]="['']" class="capitalize">
-      {{ title }}
-    </a>
-  </h1>
-
-  <div class="flex justify-center max-w-lvw">
-    <router-outlet></router-outlet>
-  </div>
+<div class="flex justify-center max-w-lvw">
+  <router-outlet></router-outlet>
 </div>
