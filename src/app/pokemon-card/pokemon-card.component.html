@@ -1,6 +1,6 @@
 
 
-<div class="w-[440px] relative flex flex-col items-center overflow-hidden border-zinc-900 border-[20px] bg-zinc-900 rounded-[60px] lg:scale-90 scale-[0.85]">
+<div class="w-[440px] relative flex flex-col items-center overflow-hidden border-zinc-900 border-[20px] bg-zinc-900 rounded-[60px] lg:scale-100 scale-[0.85]">
     <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
     </div>
     <div class="w-full z-10 pt-4 px-8 flex justify-between items-center">
@@ -23,13 +23,6 @@
     <div class="w-[90%] flex justify-center text-justify">
         <p>{{ description }}</p>
     </div>
-    <!-- <div>
-        Stats:
-        <div *ngFor="let stat of (stats || [])" class="ml-6">
-            {{ stat.stat.name.toUpperCase() }}: {{ stat.base_stat }}
-        </div>
-        
-    </div> -->
     
     <div class="w-full">
         @if (pokemon) {
