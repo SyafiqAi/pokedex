@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class PokemonCardViewComponent {
   constructor(private route: ActivatedRoute) { }
 
-  pokemonId = 0
+  pokemonId = '0'
 
   ngOnInit() {
     console.log('hello')
@@ -21,7 +21,12 @@ export class PokemonCardViewComponent {
     // this.pokemonId = Number(routeParams.get('pokemonId'));
     this.route.paramMap
       .subscribe((params) => {
-        this.pokemonId = Number(params.get('pokemonId'));
+        try {
+          this.pokemonId = String(params.get('pokemonId'));
+        } catch (error) {
+          console.log('error', error)
+          alert('something went wrong.')          
+        }
         console.log('param : ', this.pokemonId)
       });
   }

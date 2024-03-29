@@ -25,7 +25,7 @@ export class PokedexService {
   private _pokemon: Pokemon | null = null;
   private _pokemonSpecies: PokemonSpecies | null = null;
 
-  public async pokemonCardDetails(pokemonId: number) {
+  public async pokemonCardDetails(pokemonId: string|number) {
     const url = (endpoint:string) => {return this._pokemonUrl + endpoint + pokemonId}
     const p =  firstValueFrom(this.http.get<Pokemon>(url('pokemon/')));
     const pSpecies = firstValueFrom(this.http.get<PokemonSpecies>(url('pokemon-species/')));

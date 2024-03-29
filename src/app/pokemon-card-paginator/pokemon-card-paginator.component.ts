@@ -12,20 +12,24 @@ export class PokemonCardPaginatorComponent {
 
   constructor(private route: ActivatedRoute) {}
 
-  pokemonId: number = 0;
+  pokemonId: string = '0';
   
   ngOnInit() {
       this.route.paramMap
         .subscribe((params) => {
-          this.pokemonId = Number(params.get('pokemonId'));
+            this.pokemonId = String(params.get('pokemonId'));
         });
   }
 
   public get prevPokemon() {
-    return String(this.pokemonId-1);
+    return String(Number(this.pokemonId)-1);
   }
   public get nextPokemon() {
-    return String(this.pokemonId+1);
+    return String(Number(this.pokemonId)+1);
+  }
+
+  moreThanOne(pokemonId: string) {
+    return Number(pokemonId) === 1;
   }
   
 }

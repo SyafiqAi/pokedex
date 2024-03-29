@@ -23,9 +23,9 @@ import { PokemonCardDetails } from '../pokemon-card-details';
 export class PokemonCardComponent {
   constructor(private pokedexService: PokedexService) { }
 
-  @Input({ required: true }) pokemonId!: number;
+  @Input({ required: true }) pokemonId!: string;
   loading = true;
-  pokemonCardDetails: PokemonCardDetails | null = null;
+  pokemonCardDetails: PokemonCardDetails | undefined;
 
 
   ngOnChanges(changes: SimpleChanges) {
