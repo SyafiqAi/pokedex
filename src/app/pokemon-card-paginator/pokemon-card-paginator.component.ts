@@ -29,7 +29,7 @@ export class PokemonCardPaginatorComponent {
   }
 
   moreThanOne(pokemonId: string) {
-    return Number(pokemonId) === 1;
+    return Number(pokemonId) > 1;
   }
   
 }
