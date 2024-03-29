@@ -18,7 +18,7 @@ import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon
 export class PokemonMovesListComponent {
 
   @Input({ required: true }) moves!: {move: {name: string; url: string;}}[];
-  pokemonMoves: PokemonMoveDetails[] = [];
+  pokemonMoves: PokemonMoveDetails[] | null = null;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['moves'].currentValue) {

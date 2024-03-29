@@ -149,8 +149,10 @@ export class PokedexService {
   getMoveDescription(move: PokemonMove) {
     const descriptions = move.flavor_text_entries;
     const enDescriptions = this.filterEnglishText(descriptions);
+    if (!enDescriptions[0]) return '-' // some moves don't have a description.
+    
     const enDescription = enDescriptions[0].flavor_text;
-
+    
     return enDescription;
   }
 
