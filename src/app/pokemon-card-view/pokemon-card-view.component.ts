@@ -16,7 +16,6 @@ export class PokemonCardViewComponent {
   pokemonId = '0'
 
   ngOnInit() {
-    console.log('hello')
     // const routeParams = this.route.snapshot.paramMap;
     // this.pokemonId = Number(routeParams.get('pokemonId'));
     this.route.paramMap
@@ -24,10 +23,9 @@ export class PokemonCardViewComponent {
         try {
           this.pokemonId = String(params.get('pokemonId'));
         } catch (error) {
-          console.log('error', error)
-          alert('something went wrong.')          
+          console.log(error)
+          alert('Something went wrong.')          
         }
-        console.log('param : ', this.pokemonId)
       });
   }
 }
