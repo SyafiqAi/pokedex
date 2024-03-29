@@ -25,9 +25,4 @@ export class PokemonCardViewComponent {
         console.log('param : ', this.pokemonId)
       });
   }
-
-
-  toString(n: number) {
-    return String(n)
-  }
 }

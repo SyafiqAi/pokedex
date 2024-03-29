@@ -9,14 +9,17 @@
         </div>
         <div class="w-full z-10 pt-4 px-8 flex justify-between items-center">
             <div>
+                <!-- <p class="box-red">{{ pokemonTypes }}</p> -->
                 <p class="text-3xl font-black">{{ pokemonName }}</p>
                 <p>{{ genus }}</p>
             </div>
             <div class="h-12">
-                <app-pokemon-type-icon-list [types]="types"></app-pokemon-type-icon-list>
+                @if (types) {
+                    <app-pokemon-type-icon-list [types]="types"></app-pokemon-type-icon-list>
+                }
             </div>
         </div>
-        <img [src]="picUrl||null" [alt]="pokemonName" class="h-[300px] z-[9]">
+        <img [src]="picUrl" [alt]="pokemonName" class="h-[300px] z-[9]">
     
         <div class="w-[90%] flex justify-center text-justify">
             <p>{{ description }}</p>
