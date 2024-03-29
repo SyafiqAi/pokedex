@@ -12,6 +12,7 @@ import { PokemonTypeStylesService } from '../pokemon-type-styles.service';
 import { PokemonTypeIconListComponent } from '../pokemon-type-icon-list/pokemon-type-icon-list.component';
 import { PokemonTypes } from '../pokemon-types';
 import { Observable } from 'rxjs';
+import { PokemonCardDetails } from '../pokemon-card-details';
 @Component({
   selector: 'app-pokemon-card',
   standalone: true,
@@ -23,11 +24,9 @@ export class PokemonCardComponent {
   constructor(private pokedexService: PokedexService) { }
 
   @Input({ required: true }) pokemonId!: number;
-
-  // pokemon: Pokemon | null = null;
   loading = true;
+  pokemonCardDetails: PokemonCardDetails | null = null;
 
-  pTypes: string[] | undefined;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pokemonId'].currentValue) {
@@ -38,37 +37,37 @@ export class PokemonCardComponent {
   async makeCard() {
     this.loading = true;
 
-    await this.pokedexService.setPokemonId(this.pokemonId);
+    this.pokemonCardDetails = await this.pokedexService.pokemonCardDetails(this.pokemonId);
 
     this.loading = false;
   }
 
   public get types() {
-    return this.pokedexService.pokemonTypes;
+    return this.pokemonCardDetails?.types
   }
 
   public get typeBg() {
-    return this.pokedexService.pokemonTypeBgColor;
+    return this.pokemonCardDetails?.typeBgColor
   }
 
   public get picUrl() {
-    return this.pokedexService.officialArtworkUrl;
+    return this.pokemonCardDetails?.officialArtworkUrl
   }
 
   public get pokemonName() {
-    return this.pokedexService.pokemonName;
+    return this.pokemonCardDetails?.name
   }
 
   public get genus() {
-    return this.pokedexService.pokemonGenus;
+    return this.pokemonCardDetails?.genus
   }
 
   public get description() {
-    return this.pokedexService.pokemonDescription;
+    return this.pokemonCardDetails?.description
   }
 
-  public get pokemon() {
-    return this.pokedexService.pokemon;
+  public get moves() {
+    return this.pokemonCardDetails?.moves;
   }
 
 }

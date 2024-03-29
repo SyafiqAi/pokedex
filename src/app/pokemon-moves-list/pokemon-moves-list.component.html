@@ -1,18 +1,18 @@
 <div class="h-[180px] my-4 overflow-y-auto scale-90 origin-center">
     @for (move of pokemonMoves; track move; let i = $index) {
-    @if(move.moveDetails) {
+    @if(move) {
     <div class="flex justify-center my-7 first:mt-0">
         <div class="h-fit flex items-center w-[80%]">
             <div class="size-11 mr-6">
-                <app-pokemon-type-icon [type]="move.moveDetails.type.name"></app-pokemon-type-icon>
+                <app-pokemon-type-icon [type]="move.type"></app-pokemon-type-icon>
             </div>
 
             <div class="w-[calc(80%-1.5rem)]">
                 <div class="font-bold">
-                    {{ getMoveName(move.moveDetails) }}
+                    {{ move.name }}
                 </div>
                 <div class="text-justify ml-5">
-                    {{ getFlavorTextEntry(move.moveDetails) || '-' }}
+                    {{ move.description || '-' }}
                 </div>
             </div>
         </div>

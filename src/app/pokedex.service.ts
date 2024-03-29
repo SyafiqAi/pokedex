@@ -5,9 +5,10 @@ import { PokemonSpecies } from './pokemon-species';
 import { PokemonNameAndUrl } from './pokemon-name-and-url';
 import { PokeapiResourceList } from './pokeapi-resource-list';
 import { PokemonMove } from './pokemon-move';
-import { combineLatestAll, endWith, iif, map, merge, mergeAll, mergeMap, pipe, toArray } from 'rxjs';
+import { combineLatestAll, endWith, firstValueFrom, iif, map, merge, mergeAll, mergeMap, pipe, toArray } from 'rxjs';
 import { TextFormatterService } from './text-formatter.service';
 import { PokemonTypeStylesService } from './pokemon-type-styles.service';
+import { PokemonCardDetails } from './pokemon-card-details';
 
 @Injectable({
   providedIn: 'root'
@@ -24,81 +25,138 @@ export class PokedexService {
   private _pokemon: Pokemon | null = null;
   private _pokemonSpecies: PokemonSpecies | null = null;
 
-  public setPokemonId(pokemonId: number) {
-    return new Promise((resolve, reject): void => {
-      this._pokemonId = pokemonId;
+  public async pokemonCardDetails(pokemonId: number) {
+    const url = (endpoint:string) => {return this._pokemonUrl + endpoint + pokemonId}
+    const p =  firstValueFrom(this.http.get<Pokemon>(url('pokemon/')));
+    const pSpecies = firstValueFrom(this.http.get<PokemonSpecies>(url('pokemon-species/')));
+    const [pokemon, pokemonSpecies] = await Promise.all(([p,pSpecies]));
 
-      this.http.get<Pokemon>(this._pokemonUrl + 'pokemon/' + pokemonId).subscribe(
-        pokemon => {
-          this._pokemon = pokemon;
-          assignSpecies();
-        }
-      )
-  
-      const assignSpecies = () => {
-        const endpoint = 'pokemon-species/' + this._pokemon?.name
-        this.http.get<PokemonSpecies>(this._pokemonUrl + endpoint).subscribe(
-          pokemonSpecies => {
-            this._pokemonSpecies = pokemonSpecies
-            resolve(null);
-          }
-        )
-      }
-  
-    })
+    const pokemonCardDetails = this.assignPokemonCardDetails(pokemon, pokemonSpecies);
+    
+    return pokemonCardDetails;
   }
   
-  public set pokemonId(pokemonId: number) {
-    this._pokemonId = pokemonId;
-
-    this.http.get<Pokemon>(this._pokemonUrl + 'pokemon/' + pokemonId).subscribe(
-      pokemon => {
-        this._pokemon = pokemon;
-        assignSpecies();
-      }
-    )
-
-    const assignSpecies = () => {
-      const endpoint = 'pokemon-species/' + this._pokemon?.name
-      this.http.get<PokemonSpecies>(this._pokemonUrl + endpoint).subscribe(
-        pokemonSpecies => {
-          this._pokemonSpecies = pokemonSpecies
-        }
-      )
+  private assignPokemonCardDetails(pokemon: Pokemon, pokemonSpecies: PokemonSpecies) {
+    const name = this.pokemonName(pokemonSpecies);
+    const genus = this.pokemonGenus(pokemonSpecies)
+    const types = this.pokemonTypes(pokemon);
+    const typeBgColor = this.pokemonTypeBgColor(types[0]);
+    const officialArtworkUrl = this.officialArtworkUrl(pokemon)
+    const description = this.pokemonDescription(pokemonSpecies);
+    const moves = this.pokemonMoves(pokemon)
+  
+    const pokemonCardDetails: PokemonCardDetails = {
+      name: name,
+      genus: genus,
+      types: types,
+      typeBgColor: typeBgColor,
+      officialArtworkUrl: officialArtworkUrl,
+      description: description,
+      moves: moves,
     }
+    
+    return pokemonCardDetails;
+
+  }
+
+  public pokemonName(pokemonSpecies: PokemonSpecies) {
+      const names = pokemonSpecies.names
+      const enNames = this.filterEnglishText(names)
+      return enNames[0].name;
+  }  
+  
+  public pokemonGenus(pokemonSpecies: PokemonSpecies) {
+    const genera = pokemonSpecies.genera
+    const enGenera = this.filterEnglishText(genera)
+    return enGenera[0].genus;
+  }
+
+  public pokemonDescription(pokemonSpecies: PokemonSpecies) {
+    const descriptions = pokemonSpecies.flavor_text_entries;
+    const enDescriptions = this.filterEnglishText(descriptions);
+    const enDescription = this.textFormatter.removeUnwantedCharacters(enDescriptions[0].flavor_text)
+    return enDescription;
+  }
+
+  public pokemonTypes(pokemon: Pokemon) {
+    const types = pokemon.types.map(type => { return type.type.name });
+    return types[0] == 'normal' ? types.reverse() : types;
+  }
+  
+  public pokemonTypeBgColor(pokemonType: string) {
+    const type = pokemonType as keyof typeof this.stylesService.styles.bg;
+    const mainTypeBgColor = this.stylesService.styles.bg[type]
+    return mainTypeBgColor;
+  }
+
+  public officialArtworkUrl(pokemon: Pokemon) {
+    const officialArtwork = pokemon.sprites.other['official-artwork'];
+    const url = officialArtwork.front_default || officialArtwork.front_shiny;
+    return url;
+  }
+
+  public pokemonMoves(pokemon: Pokemon) {
+    return pokemon.moves;
+  }
+
+  public async getPokemonMovesListDetails(moves: {move: {name: string; url: string;}}[]) {
+
+    const movesPromiseList: Promise<PokemonMove>[] = []
+    
+    moves.forEach(move => {
+      const url = move.move.url;
+      movesPromiseList.push(firstValueFrom(this.getPokemonMove(url)))
+    })
+
+    const allPokemonMoves = await Promise.all(movesPromiseList)
+
+    const pokemonMovesListDetails: {type: string; name: string; description: string}[] = []
+
+    allPokemonMoves.forEach(move => {
+      pokemonMovesListDetails.push(this.getMoveDetails(move));
+    })
+    
+    return pokemonMovesListDetails;
+    
+  }
+
+  getPokemonMove(moveUrl: string) {
+    return this.http.get<PokemonMove>(moveUrl);
+  }
+
+  getMoveDetails(move: PokemonMove) {
+    const type = move.type.name;
+    const name = this.getMoveName(move);
+    const description = this.getMoveDescription(move);
+
+    const moveDetails = {
+      type: type,
+      name: name,
+      description: description
+    }
+
+    return moveDetails;
+  }
+  
+  getMoveName(move: PokemonMove) {
+    const names = move.names;
+    const enNames = this.filterEnglishText(names);
+    const enName = enNames[0].name;
+
+    return enName;
+  }
+
+  getMoveDescription(move: PokemonMove) {
+    const descriptions = move.flavor_text_entries;
+    const enDescriptions = this.filterEnglishText(descriptions);
+    const enDescription = enDescriptions[0].flavor_text;
+
+    return enDescription;
   }
 
   // TODO set to private
   public get pokemon() {
     return this._pokemon;
-  }
-
-  public get officialArtworkUrl() {
-    const url = this._pokemon?.sprites.other['official-artwork'].front_default
-      || this._pokemon?.sprites.other['official-artwork'].front_shiny;
-    return url;
-  }
-
-  public get pokemonName() {
-    if (!this._pokemonSpecies) return null;
-    const names = this._pokemonSpecies?.names
-    const enNames = this.filterEnglishText(names)
-    return enNames[0].name;
-  }
-
-  public get pokemonGenus() {
-    if (!this._pokemonSpecies) return null;
-    const generas = this._pokemonSpecies.genera
-    const enGeneras = this.filterEnglishText(generas)
-    return enGeneras[0].genus;
-  }
-
-  public get pokemonDescription() {
-    if (!this._pokemonSpecies) return null;
-    const descriptions = this._pokemonSpecies.flavor_text_entries;
-    const enDescriptions = this.filterEnglishText(descriptions);
-    const enDescription = this.textFormatter.removeUnwantedCharacters(enDescriptions[0].flavor_text)
-    return enDescription;
   }
 
   public set pokemonList(nextList: PokemonNameAndUrl[]) {
@@ -139,23 +197,7 @@ export class PokedexService {
     return this.http.get<Pokemon>(this._pokemonUrl + endpoint)
   }
 
-  public get pokemonTypes() {
-    if (!this._pokemon) return null;
-    const types = this._pokemon.types.map(type => { return type.type.name });
-    return types[0] == 'normal' ? types.reverse() : types;
-  }
 
-  public get pokemonTypeBgColor() {
-    if (!this.pokemonTypes) {
-      const normalTypeBgColor = this.stylesService.styles.bg.normal
-      return normalTypeBgColor;
-    }
-
-
-    const mainType = this.pokemonTypes[0] as keyof typeof this.stylesService.styles.bg;
-    const mainTypeBgColor = this.stylesService.styles.bg[mainType]
-    return mainTypeBgColor;
-  }
 
   toArrayOfPokemonTypeNames() {
     return pipe(
@@ -173,9 +215,6 @@ export class PokedexService {
 
   }
 
-  getPokemonMove(moveUrl: string) {
-    return this.http.get<PokemonMove>(moveUrl);
-  }
 
   private filterEnglishText<T extends multipleLanguages>(arr: T[]) {
     let englishOnlyArr = arr.filter(ft => { return ft.language.name === this.language })

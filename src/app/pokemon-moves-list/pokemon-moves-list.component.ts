@@ -17,65 +17,25 @@ import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon
 })
 export class PokemonMovesListComponent {
 
-  @Input({ required: true }) pokemon!: Pokemon;
-  pokemonMoves: PokemonMoveReference[] = [];
+  @Input({ required: true }) moves!: {move: {name: string; url: string;}}[];
+  pokemonMoves: PokemonMoveDetails[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pokemon'].currentValue) {
-      this.pokemonMoves = this.pokemon.moves.map(m => {
-        return { ...m, moveDetails: null as PokemonMove | null }
-      })
-
-      this.getAllMoveDetails();
+    if (changes['moves'].currentValue) {
+      this.makeMoveList();
     }
   }
 
-  getAllMoveDetails() {
-    this.pokemonMoves.forEach(move => {
-      this.loadPokemonMove(move)
-    })
+  async makeMoveList() {
+    this.pokemonMoves = await this.pokedexService.getPokemonMovesListDetails(this.moves);
   }
 
-  loadPokemonMove(pokemonMove: PokemonMoveReference) {
-    const url = (pokemonMove as PokemonMoveReference).move.url
-    this.pokedexService.getPokemonMove(url).subscribe({
-      next: (moveDetails: PokemonMove) => {
-        return pokemonMove.moveDetails = moveDetails;
-      }
-    })
-  }
-
-  getFlavorTextEntry(move: PokemonMove) {
-    const language = 'en'
-    try {
-      const text = move.flavor_text_entries?.filter(m => { return m.language.name == language })[0].flavor_text;
-      const formattedText = this.textFormatterService.removeUnwantedCharacters(text);
-      return formattedText;
-    } catch (error) {
-      return null
-    }
-  }
-
-  getMoveName(move: PokemonMove) {
-    const language = 'en'
-
-    try {
-      const text = move.names?.filter(m => { return m.language.name == language })[0].name;
-      const formattedText = this.textFormatterService.removeUnwantedCharacters(text);
-      return formattedText;
-    } catch (error) {
-      return null
-    }
-  }
-
-  constructor(private pokedexService: PokedexService, private textFormatterService: TextFormatterService) { }
+  constructor(private pokedexService: PokedexService) { }
 
 }
 
-interface PokemonMoveReference {
-  move: {
-    name: string;
-    url: string;
-  },
-  moveDetails: PokemonMove | null;
+interface PokemonMoveDetails {
+ type: string;
+ name: string;
+ description: string;
 }
