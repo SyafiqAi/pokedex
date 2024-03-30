@@ -1,35 +1,46 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
+import { PokedexService } from '../pokedex.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-pokemon-card-paginator',
   standalone: true,
-  imports: [RouterModule, RouterLink],
+  imports: [RouterModule, RouterLink, CommonModule],
   templateUrl: './pokemon-card-paginator.component.html',
   styleUrl: './pokemon-card-paginator.component.css'
 })
 export class PokemonCardPaginatorComponent {
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private pokedexService: PokedexService) { }
 
-  pokemonId: string = '0';
-  
-  ngOnInit() {
-      this.route.paramMap
-        .subscribe((params) => {
-            this.pokemonId = String(params.get('pokemonId'));
-        });
+  pokemonName: string = '';
+  private _prevPokemon = ''
+  private _nextPokemon = ''
+
+  async ngOnInit() {
+    this.route.paramMap
+      .subscribe((params) => {
+        this.pokemonName = String(params.get('pokemonName'));
+        this.getNextAndPrevPokemon();
+      });
+  }
+
+  async getNextAndPrevPokemon() {
+    const prev = this.pokedexService.getPrevPokemonName(this.pokemonName)
+    const next = this.pokedexService.getNextPokemonName(this.pokemonName)
+    Promise.all([prev,next]).then(([prev,next]) => {
+      this._prevPokemon = prev
+      this._nextPokemon = next
+    })
   }
 
   public get prevPokemon() {
-    return String(Number(this.pokemonId)-1);
+    return this._prevPokemon
   }
   public get nextPokemon() {
-    return String(Number(this.pokemonId)+1);
+    return this._nextPokemon
   }
 
-  moreThanOne(pokemonId: string) {
-    return Number(pokemonId) > 1;
-  }
   
 }

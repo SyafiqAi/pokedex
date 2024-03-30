@@ -1,15 +1,17 @@
 <div class="flex justify-center">
 
-    @if (moreThanOne(pokemonId)) {
+    @if (prevPokemon) {
         <a [routerLink]="['/pokemon', prevPokemon]" class="text-5xl">
             &lt; 
         </a>
+        <div class="w-12"></div>
     }
 
-    <div class="w-12"></div>
+    @if (nextPokemon) {
+        <a [routerLink]="['/pokemon', nextPokemon]" class="text-5xl">
+            &gt;
+        </a>
+    }
 
-    <a [routerLink]="['/pokemon', nextPokemon]" class="text-5xl">
-        &gt;
-    </a>
 
 </div>

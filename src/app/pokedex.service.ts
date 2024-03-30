@@ -185,7 +185,7 @@ export class PokedexService {
     const pokemonListPage = this._mainPokemonList?.filter((pokemon, index) => {
       return index >= offset && index < offset + pokemonPerPage;
     })
-
+    
     return pokemonListPage;
   }
 
@@ -195,6 +195,35 @@ export class PokedexService {
 
   public get pokemonList() {
     return this._pokemonList;
+  }
+
+  public async getPrevPokemonName(pokemonName: string) {
+    if(!this._mainPokemonList) { await this.initializeMainPokemonList() }
+
+    const index = this._mainPokemonList!.findIndex(pokemon => {
+      return pokemon.name == pokemonName
+    })
+
+    if(this._mainPokemonList![index-1]) {
+      return this._mainPokemonList![index-1].name;
+    }
+    return '';
+
+  }
+
+  public async getNextPokemonName(pokemonName: string) {
+    if(!this._mainPokemonList) { await this.initializeMainPokemonList() }
+    
+    const index = this._mainPokemonList!.findIndex(pokemon => {
+      return pokemon.name == pokemonName
+    })
+
+    if(this._mainPokemonList![index+1]) {
+      return this._mainPokemonList![index+1].name;
+    }
+
+    return '';
+
   }
 
   getPokemon(nameOrId: string | number) {
