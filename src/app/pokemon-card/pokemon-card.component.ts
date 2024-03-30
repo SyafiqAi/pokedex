@@ -23,13 +23,13 @@ import { PokemonCardDetails } from '../pokemon-card-details';
 export class PokemonCardComponent {
   constructor(private pokedexService: PokedexService) { }
 
-  @Input({ required: true }) pokemonId!: string;
+  @Input({ required: true }) pokemonName!: string;
   loading = true;
   pokemonCardDetails: PokemonCardDetails | undefined;
 
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pokemonId'].currentValue) {
+    if (changes['pokemonName'].currentValue) {
       this.makeCard();
     }
   }
@@ -37,7 +37,7 @@ export class PokemonCardComponent {
   async makeCard() {
     this.loading = true;
 
-    this.pokemonCardDetails = await this.pokedexService.pokemonCardDetails(this.pokemonId);
+    this.pokemonCardDetails = await this.pokedexService.pokemonCardDetails(this.pokemonName);
 
     this.loading = false;
   }
@@ -54,7 +54,7 @@ export class PokemonCardComponent {
     return this.pokemonCardDetails?.officialArtworkUrl
   }
 
-  public get pokemonName() {
+  public get name() {
     return this.pokemonCardDetails?.name
   }
 
