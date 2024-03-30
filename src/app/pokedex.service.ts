@@ -25,10 +25,8 @@ export class PokedexService {
   private _pokemonPerPage: number = 60;
 
   public async pokemonCardDetails(pokemonId: string|number) {
-    const detailsUrl = (endpoint:string) => this._pokemonUrl + endpoint + pokemonId
-    const p =  firstValueFrom(this.http.get<Pokemon>(detailsUrl('pokemon/')));
-    const pSpecies = firstValueFrom(this.http.get<PokemonSpecies>(detailsUrl('pokemon-species/')));
-    const [pokemon, pokemonSpecies] = await Promise.all(([p,pSpecies]));
+    const pokemon =  await firstValueFrom(this.http.get<Pokemon>(this._pokemonUrl + 'pokemon/' + pokemonId));
+    const pokemonSpecies = await firstValueFrom(this.http.get<PokemonSpecies>(this._pokemonUrl + 'pokemon-species/' + pokemon.species.name));
 
     const pokemonCardDetails = this.assignPokemonCardDetails(pokemon, pokemonSpecies);
     
