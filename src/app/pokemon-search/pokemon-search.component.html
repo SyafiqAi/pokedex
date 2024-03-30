@@ -1,14 +1,18 @@
-<div (click)="toggleModal(true)">Search</div>
+<div (click)="toggleModal(true)" class="p-6 hover:bg-black hover:cursor-pointer flex items-center">
+    <span class="material-symbols-outlined">
+        search
+        </span>
+    </div>
 
 <div class="z-50 h-[100vh] w-[100vw] fixed top-0 left-0 bg-black bg-opacity-75" [class]="{hidden:!showModal}"
     (click)="toggleModal(false)">
     <div class="bg-zinc-900 h-full w-[65vw] lg:w-[50vw] ml-auto" (click)="onClick($event)">
 
         <input type="text" [(ngModel)]="searchValue" class="w-full bg-black p-6" id="searchInput"
-            placeholder="Search for Pokemon">
+            placeholder="Search for Pokémon">
 
         @if (filteredList) {
-        <div class="overflow-auto h-full">
+        <div class="overflow-auto h-full">  
             @for (pokemon of filteredList; track $index) {
             <a [routerLink]="['pokemon', pokemon]" (click)="toggleModal(false)">
                 <div class="capitalize p-6 border border-black hover:bg-black last:border-b-2">

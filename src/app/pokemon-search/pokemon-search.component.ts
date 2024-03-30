@@ -20,7 +20,7 @@ export class PokemonSearchComponent {
 
   pokemonList: string[] = []
   searchValue = ''
-  showModal = true;
+  showModal = false;
 
 
   handleInput() {

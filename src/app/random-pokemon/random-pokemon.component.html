@@ -1,1 +1,7 @@
-<a [routerLink]="'pokemon/' + randomPokemon" (click)="newRandomPokemon()">Random</a>
+<a [routerLink]="['/pokemon', randomPokemon]" (click)="newRandomPokemon()" class="hover:bg-black">
+    <div class="p-6 hover:bg-black flex items-center">
+        <span class="material-symbols-outlined">
+            casino
+        </span>
+    </div>
+</a>

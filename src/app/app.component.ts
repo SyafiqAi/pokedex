@@ -20,7 +20,7 @@ export class AppComponent {
 
   constructor(private pokedexService: PokedexService) { }
 
-  title = 'pokédex';
+  title = 'Pokédex';
 
   async ngOnInit() {
     register();

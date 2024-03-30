@@ -6,14 +6,18 @@
 <div class="flex justify-center font-black py-4">
     @if (currentPage > firstPage) {
         <a routerLink="" [queryParams]="{page: (currentPage-1)}" class="text-3xl">
-            &lt;
+            <span class="material-symbols-outlined">
+                arrow_back_ios
+            </span>
         </a>
         <div class="w-10"></div>
     }
 
     @if (!isLastPage) {
         <a routerLink="" [queryParams]="{page: (currentPage+1)}" class="text-3xl">
-            &gt;
+            <span class="material-symbols-outlined">
+                arrow_forward_ios
+            </span>
         </a>
     }
     

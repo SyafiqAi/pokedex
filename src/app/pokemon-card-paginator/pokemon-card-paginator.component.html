@@ -1,16 +1,23 @@
-<div class="flex justify-center">
+<div class="flex justify-center mb-6">
 
     @if (prevPokemon) {
-        <a [routerLink]="['/pokemon', prevPokemon]" class="text-5xl">
-            &lt; 
-        </a>
-        <div class="w-12"></div>
+    <a [routerLink]="['/pokemon', prevPokemon]" class="text-5xl flex items-center">
+        <span class="material-symbols-outlined">
+            arrow_back_ios
+        </span>
+    </a>
     }
 
+    <div class="mx-6">
+        <app-random-pokemon></app-random-pokemon>
+    </div>
+
     @if (nextPokemon) {
-        <a [routerLink]="['/pokemon', nextPokemon]" class="text-5xl">
-            &gt;
-        </a>
+    <a [routerLink]="['/pokemon', nextPokemon]" class="text-5xl  flex items-center">
+        <span class="material-symbols-outlined ">
+            arrow_forward_ios
+        </span>
+    </a>
     }
 
 

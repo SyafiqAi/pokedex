@@ -25,10 +25,11 @@
             <p>{{ description }}</p>
         </div>
     
-        <div class="w-full">
+        <div class="w-full h-full ">
             @if (moves) {
                 <app-pokemon-moves-list [moves]="moves"></app-pokemon-moves-list>
             }
         </div>
+        <div class="h-1 w-full" [class]="typeBg"></div>
     }
 </div>

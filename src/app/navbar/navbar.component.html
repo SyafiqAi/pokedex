@@ -1,11 +1,12 @@
-<nav>
-    <div class="flex box-red justify-end">
-        <a routerLink="" class="mr-auto">
+<nav class="flex justify-end mb-6 items-center bg-zinc-900">
+    
+    <a routerLink="" class="p-6 mr-auto">
+        <div>
             <h1 class="text-3xl font-black"> {{ title }}</h1>
-        </a>
-        
-        <app-random-pokemon></app-random-pokemon>
+        </div>
+    </a>
 
-        <app-pokemon-search></app-pokemon-search>
-    </div>
+    <app-random-pokemon></app-random-pokemon>
+
+    <app-pokemon-search></app-pokemon-search>
 </nav>

@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { PokedexService } from '../pokedex.service';
 import { CommonModule } from '@angular/common';
+import { RandomPokemonComponent } from '../random-pokemon/random-pokemon.component';
 
 @Component({
   selector: 'app-pokemon-card-paginator',
   standalone: true,
-  imports: [RouterModule, RouterLink, CommonModule],
+  imports: [RouterModule, RouterLink, CommonModule, RandomPokemonComponent],
   templateUrl: './pokemon-card-paginator.component.html',
   styleUrl: './pokemon-card-paginator.component.css'
 })
