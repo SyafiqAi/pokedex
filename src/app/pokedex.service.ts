@@ -21,21 +21,20 @@ export class PokedexService {
   private _pokemonUrl = 'https://pokeapi.co/api/v2/';
   private _pokemonList: PokemonNameAndUrl[] = [];
   private _pokemon: Pokemon | null = null;
-  private _mainPokemonList: PokemonNameAndUrl[] | null = null;
+  private _mainPokemonList: Promise<PokemonNameAndUrl[]> = this.initializeMainPokemonList();
   private _pokemonPerPage: number = 60;
-  private _totalPages: number = 0;
 
   public async pokemonCardDetails(pokemonId: string|number) {
-    const url = (endpoint:string) => {return this._pokemonUrl + endpoint + pokemonId}
-    const p =  firstValueFrom(this.http.get<Pokemon>(url('pokemon/')));
-    const pSpecies = firstValueFrom(this.http.get<PokemonSpecies>(url('pokemon-species/')));
+    const detailsUrl = (endpoint:string) => this._pokemonUrl + endpoint + pokemonId
+    const p =  firstValueFrom(this.http.get<Pokemon>(detailsUrl('pokemon/')));
+    const pSpecies = firstValueFrom(this.http.get<PokemonSpecies>(detailsUrl('pokemon-species/')));
     const [pokemon, pokemonSpecies] = await Promise.all(([p,pSpecies]));
 
     const pokemonCardDetails = this.assignPokemonCardDetails(pokemon, pokemonSpecies);
     
     return pokemonCardDetails;
   }
-  
+
   private assignPokemonCardDetails(pokemon: Pokemon, pokemonSpecies: PokemonSpecies) {
     const name = this.pokemonName(pokemonSpecies);
     const genus = this.pokemonGenus(pokemonSpecies)
@@ -166,29 +165,23 @@ export class PokedexService {
 
   public async initializeMainPokemonList() {
     const url = (limit: number) => `${this._pokemonUrl}pokemon/?limit=${limit}`;
-    // const limit = 1;
-    // const emptySearch = this.http.get<PokemonApiEmptySearch>(url(limit)).pipe(map(search => search.count));
-    // const entireListSize = await firstValueFrom(emptySearch);
+
+    const limit = 1025;
+    // Magic number.
+    // The newer Pokemon have missing/extra details 
+    // that I don't have time to account for.
     
-    const entireListSearch = this.http.get<PokemonApiEmptySearch>(url(1025)).pipe(map(search => search.results));
+    const entireListSearch = this.http.get<PokemonApiEmptySearch>(url(limit)).pipe(map(search => search.results));
     const entireList = await firstValueFrom(entireListSearch);
-    this._mainPokemonList = entireList;
-
-    this._totalPages = Math.ceil(entireList.length / this._pokemonPerPage);
-  }
-
-  public get mainPokemonList() {
-    return this._mainPokemonList;
+    return entireList;
   }
 
   public async getPokemonListByPage(page: number, pokemonPerPage: number = 60) {
-    if (!this._mainPokemonList) {
-      await this.initializeMainPokemonList();
-    }
+    const list = await this._mainPokemonList;
     
     const offset = (page - 1) * pokemonPerPage;
 
-    const pokemonListPage = this._mainPokemonList?.filter((pokemon, index) => {
+    const pokemonListPage = list.filter((pokemon, index) => {
       return index >= offset && index < offset + pokemonPerPage;
     })
     
@@ -204,28 +197,28 @@ export class PokedexService {
   }
 
   public async getPrevPokemonName(pokemonName: string) {
-    if(!this._mainPokemonList) { await this.initializeMainPokemonList() }
+    const list = await this._mainPokemonList;
 
-    const index = this._mainPokemonList!.findIndex(pokemon => {
+    const index = list.findIndex(pokemon => {
       return pokemon.name == pokemonName
     })
 
-    if(this._mainPokemonList![index-1]) {
-      return this._mainPokemonList![index-1].name;
+    if(list[index-1]) {
+      return list[index-1].name;
     }
     return '';
 
   }
 
   public async getNextPokemonName(pokemonName: string) {
-    if(!this._mainPokemonList) { await this.initializeMainPokemonList() }
+    const list = await this._mainPokemonList;
     
-    const index = this._mainPokemonList!.findIndex(pokemon => {
+    const index = list.findIndex(pokemon => {
       return pokemon.name == pokemonName
     })
 
-    if(this._mainPokemonList![index+1]) {
-      return this._mainPokemonList![index+1].name;
+    if(list[index+1]) {
+      return list[index+1].name;
     }
 
     return '';
@@ -233,14 +226,15 @@ export class PokedexService {
   }
 
   public async getRandomPokemonName() {
-    if(!this._mainPokemonList) { await this.initializeMainPokemonList() }
+    const list = await this._mainPokemonList;
 
-    var randomPokemon = this._mainPokemonList![Math.floor(Math.random()*this._mainPokemonList!.length)];
+    var randomPokemon = list[Math.floor(Math.random()*list.length)];
     return randomPokemon.name;
   }
 
-  public get totalPages() {
-    return this._totalPages;
+  public async totalPages() {
+    const list = await this._mainPokemonList;
+    return Math.ceil(list.length / this._pokemonPerPage);
   }
 
   getPokemon(nameOrId: string | number) {

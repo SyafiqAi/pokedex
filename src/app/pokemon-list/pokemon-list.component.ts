@@ -17,28 +17,37 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 export class PokemonListComponent {
 
   readonly firstPage = 1;
+  private _isLastPage: boolean = false;
+  private _totalPages = 0
   currentPage: number = 1;
   sentinelMsg = 'loading...'
   pokemonList: PokemonNameAndUrl[] | undefined;
   next = ''
   constructor(private pokedexService: PokedexService, private router: ActivatedRoute) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this._totalPages = await this.pokedexService.totalPages()
+
     this.router.queryParamMap.subscribe(queryParams => {
       const pageParam = Number(queryParams.get('page'));
 
       this.updatePage(pageParam);
     })
+
   }
   
   updatePage = async(pageParam: number) => {
-    this.currentPage = (!pageParam || pageParam < 1) ? this.firstPage : pageParam;
-
+    this.currentPage = this.validPage(pageParam) ? pageParam : this.firstPage;
+    this._isLastPage = this._totalPages == this.currentPage;
     this.pokemonList = await this.pokedexService.getPokemonListByPage(this.currentPage);
   }
 
-  public get totalPages() {
-    return this.pokedexService.totalPages;
+  public get isLastPage() {
+    return this._isLastPage;
+  }
+
+  validPage(pageParam: number) {
+    return pageParam >= 1 && pageParam <= this._totalPages;
   }
 
 }
