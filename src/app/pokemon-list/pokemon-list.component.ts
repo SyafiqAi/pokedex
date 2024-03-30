@@ -27,10 +27,6 @@ export class PokemonListComponent {
     this.router.queryParamMap.subscribe(queryParams => {
       const pageParam = Number(queryParams.get('page'));
 
-      console.log('updated');
-
-      console.log('page param: ', pageParam);
-      
       this.updatePage(pageParam);
     })
   }
@@ -39,13 +35,6 @@ export class PokemonListComponent {
     this.currentPage = (!pageParam || pageParam < 1) ? this.firstPage : pageParam;
 
     this.pokemonList = await this.pokedexService.getPokemonListByPage(this.currentPage);
-  }
-
-  getNext() {
-    this.pokedexService.updatePokemonList()
-      .catch(err => {
-        this.sentinelMsg = 'Something went wrong.'
-      })
   }
 
 }
