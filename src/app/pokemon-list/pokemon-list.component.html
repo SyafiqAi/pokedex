@@ -11,8 +11,10 @@
         <div class="w-10"></div>
     }
 
+    @if (currentPage < totalPages) {
+        <a routerLink="" [queryParams]="{page: (currentPage+1)}" class="text-3xl">
+            &gt;
+        </a>
+    }
     
-    <a routerLink="" [queryParams]="{page: (currentPage+1)}" class="text-3xl">
-        &gt;
-    </a>
 </div>

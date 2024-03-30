@@ -6,11 +6,12 @@ import { PokemonListComponent } from './pokemon-list/pokemon-list.component';
 import { RouterModule } from '@angular/router';
 import { register } from 'swiper/element/bundle';
 import { PokedexService } from './pokedex.service';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, CommonModule, PokemonCardComponent, PokemonListComponent],
+  imports: [RouterModule, CommonModule, PokemonCardComponent, PokemonListComponent, NavbarComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

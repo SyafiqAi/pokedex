@@ -20,9 +20,10 @@ export class PokedexService {
 
   private _pokemonUrl = 'https://pokeapi.co/api/v2/';
   private _pokemonList: PokemonNameAndUrl[] = [];
-  private _nextPageUrl: string = '';
   private _pokemon: Pokemon | null = null;
   private _mainPokemonList: PokemonNameAndUrl[] | null = null;
+  private _pokemonPerPage: number = 60;
+  private _totalPages: number = 0;
 
   public async pokemonCardDetails(pokemonId: string|number) {
     const url = (endpoint:string) => {return this._pokemonUrl + endpoint + pokemonId}
@@ -73,6 +74,9 @@ export class PokedexService {
   public pokemonDescription(pokemonSpecies: PokemonSpecies) {
     const descriptions = pokemonSpecies.flavor_text_entries;
     const enDescriptions = this.filterEnglishText(descriptions);
+    if(enDescriptions.length == 0) {
+      return '-'
+    }
     const enDescription = this.textFormatter.removeUnwantedCharacters(enDescriptions[0].flavor_text)
     return enDescription;
   }
@@ -162,13 +166,15 @@ export class PokedexService {
 
   public async initializeMainPokemonList() {
     const url = (limit: number) => `${this._pokemonUrl}pokemon/?limit=${limit}`;
-    const limit = 1;
-    const emptySearch = this.http.get<PokemonApiEmptySearch>(url(limit)).pipe(map(search => search.count));
-    const entireListSize = await firstValueFrom(emptySearch);
+    // const limit = 1;
+    // const emptySearch = this.http.get<PokemonApiEmptySearch>(url(limit)).pipe(map(search => search.count));
+    // const entireListSize = await firstValueFrom(emptySearch);
     
-    const entireListSearch = this.http.get<PokemonApiEmptySearch>(url(entireListSize)).pipe(map(search => search.results));
+    const entireListSearch = this.http.get<PokemonApiEmptySearch>(url(1025)).pipe(map(search => search.results));
     const entireList = await firstValueFrom(entireListSearch);
     this._mainPokemonList = entireList;
+
+    this._totalPages = Math.ceil(entireList.length / this._pokemonPerPage);
   }
 
   public get mainPokemonList() {
@@ -224,6 +230,17 @@ export class PokedexService {
 
     return '';
 
+  }
+
+  public async getRandomPokemonName() {
+    if(!this._mainPokemonList) { await this.initializeMainPokemonList() }
+
+    var randomPokemon = this._mainPokemonList![Math.floor(Math.random()*this._mainPokemonList!.length)];
+    return randomPokemon.name;
+  }
+
+  public get totalPages() {
+    return this._totalPages;
   }
 
   getPokemon(nameOrId: string | number) {
