@@ -193,31 +193,6 @@ export class PokedexService {
     this._pokemonList.push(...nextList);
   }
 
-  public updatePokemonList() {
-    let url = '';
-
-    if (this._nextPageUrl) {
-      url = this._nextPageUrl;
-    } else {
-      const pokemonPerLoad = '60';
-      const endpoint = `pokemon/?limit=${pokemonPerLoad}`;
-
-      url = this._pokemonUrl + endpoint;
-    }
-
-    return new Promise((res, rej) => {
-      this.http.get<PokeapiResourceList>(url).subscribe({
-        next: nextList => {
-          this._pokemonList.push(...nextList.results)
-          this._nextPageUrl = nextList.next;
-        },
-        error: error => {
-          rej(error)
-        }
-      })
-    });
-  }
-
   public get pokemonList() {
     return this._pokemonList;
   }
