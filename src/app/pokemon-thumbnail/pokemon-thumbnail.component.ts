@@ -15,7 +15,6 @@ export class PokemonThumbnailComponent {
   pokemon: Pokemon | null = null
   picUrl = ''
   name = '';
-  id = '';
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pokemonName'].currentValue) {
@@ -24,15 +23,11 @@ export class PokemonThumbnailComponent {
   }
 
   displayThumbnail() {
-    this.pokedexService.getPokemon(this.pokemonName).subscribe(value => {
-      this.pokemon = value;
-      // this.picUrl = this.pokemon.sprites.other['official-artwork'].front_default;
-      this.picUrl = this.pokemon.sprites.front_default;
-      this.name = this.pokemon.name;
-      this.id = this.pokemon.id.toString();
+    this.pokedexService.getPokemon(this.pokemonName).subscribe(pokemon => {
+      this.picUrl = pokemon.sprites.front_default;
+      this.name = pokemon.name;
     })
   }
-
 
   constructor(private pokedexService: PokedexService) { }
   
