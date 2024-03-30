@@ -188,12 +188,10 @@ export class PokedexService {
     return pokemonListPage;
   }
 
-  public set pokemonList(nextList: PokemonNameAndUrl[]) {
-    this._pokemonList.push(...nextList);
-  }
+  public async getAllPokemonNames() {
+    const list = await this._mainPokemonList;
 
-  public get pokemonList() {
-    return this._pokemonList;
+    return list.map(p => p.name);
   }
 
   public async getPrevPokemonName(pokemonName: string) {
