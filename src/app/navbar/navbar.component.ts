@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PokedexService } from '../pokedex.service';
 import { RandomPokemonComponent } from '../random-pokemon/random-pokemon.component';
 
 @Component({
@@ -12,9 +11,4 @@ import { RandomPokemonComponent } from '../random-pokemon/random-pokemon.compone
 })
 export class NavbarComponent {
   title = 'Pokédex';
-  private _randomPokemon = ''
-  constructor(private pokedexService: PokedexService) {}
-
-
-
 }
