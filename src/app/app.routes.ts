@@ -6,6 +6,7 @@ import { PokemonCardViewComponent } from './pokemon-card-view/pokemon-card-view.
 
 export const routes: Routes = [
     {path: '', component: PokemonListComponent},
+    {path: ':page', component: PokemonListComponent, pathMatch:'full'},
     {path: 'pokemon/:pokemonId', component: PokemonCardViewComponent},
     {path: 'moves-list', component: PokemonMovesListComponent}
 ];

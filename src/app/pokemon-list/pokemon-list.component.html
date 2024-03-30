@@ -3,5 +3,16 @@
 
 </div>
 
-<app-sentinel (inView)="getNext()"></app-sentinel>
-<div class="h-32 text-6xl text-center">{{ sentinelMsg }}</div>
+<div class="flex justify-center font-black py-4">
+    @if (currentPage > firstPage) {
+        <a routerLink="" [queryParams]="{page: (currentPage-1)}" class="text-3xl">
+            &lt;
+        </a>
+        <div class="w-10"></div>
+    }
+
+    
+    <a routerLink="" [queryParams]="{page: (currentPage+1)}" class="text-3xl">
+        &gt;
+    </a>
+</div>

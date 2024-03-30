@@ -21,9 +21,8 @@ export class PokedexService {
   private _pokemonUrl = 'https://pokeapi.co/api/v2/';
   private _pokemonList: PokemonNameAndUrl[] = [];
   private _nextPageUrl: string = '';
-  private _pokemonId: number = 0;
   private _pokemon: Pokemon | null = null;
-  private _pokemonSpecies: PokemonSpecies | null = null;
+  private _mainPokemonList: PokemonNameAndUrl[] | null = null;
 
   public async pokemonCardDetails(pokemonId: string|number) {
     const url = (endpoint:string) => {return this._pokemonUrl + endpoint + pokemonId}
@@ -101,14 +100,14 @@ export class PokedexService {
 
   public async getPokemonMovesListDetails(moves: {move: {name: string; url: string;}}[]) {
 
-    const movesPromiseList: Promise<PokemonMove>[] = []
+    const movePromises: Promise<PokemonMove>[] = []
     
     moves.forEach(move => {
       const url = move.move.url;
-      movesPromiseList.push(firstValueFrom(this.getPokemonMove(url)))
+      movePromises.push(firstValueFrom(this.getPokemonMove(url)))
     })
 
-    const allPokemonMoves = await Promise.all(movesPromiseList)
+    const allPokemonMoves = await Promise.all(movePromises)
 
     const pokemonMovesListDetails: {type: string; name: string; description: string}[] = []
 
@@ -161,6 +160,35 @@ export class PokedexService {
     return this._pokemon;
   }
 
+  public async initializeMainPokemonList() {
+    const url = (limit: number) => `${this._pokemonUrl}pokemon/?limit=${limit}`;
+    const limit = 1;
+    const emptySearch = this.http.get<PokemonApiEmptySearch>(url(limit)).pipe(map(search => search.count));
+    const entireListSize = await firstValueFrom(emptySearch);
+    
+    const entireListSearch = this.http.get<PokemonApiEmptySearch>(url(entireListSize)).pipe(map(search => search.results));
+    const entireList = await firstValueFrom(entireListSearch);
+    this._mainPokemonList = entireList;
+  }
+
+  public get mainPokemonList() {
+    return this._mainPokemonList;
+  }
+
+  public async getPokemonListByPage(page: number, pokemonPerPage: number = 60) {
+    if (!this._mainPokemonList) {
+      await this.initializeMainPokemonList();
+    }
+    
+    const offset = (page - 1) * pokemonPerPage;
+
+    const pokemonListPage = this._mainPokemonList?.filter((pokemon, index) => {
+      return index >= offset && index < offset + pokemonPerPage;
+    })
+
+    return pokemonListPage;
+  }
+
   public set pokemonList(nextList: PokemonNameAndUrl[]) {
     this._pokemonList.push(...nextList);
   }
@@ -199,26 +227,7 @@ export class PokedexService {
     return this.http.get<Pokemon>(this._pokemonUrl + endpoint)
   }
 
-
-
-  toArrayOfPokemonTypeNames() {
-    return pipe(
-      map((pokemon: Pokemon) => { return pokemon.types }),
-      mergeMap(types => iif(() => types[0].type.name === 'normal', this.reverse(types), types)),
-      // if more than one type, put a non-normal type first, the normal color is a bit bland.
-      map(type => { return type.type.name }),
-      toArray()
-    )
-  }
-
-  reverse<T>(arr: T[]) {
-    const copy = [...arr];
-    return copy.reverse();
-
-  }
-
-
-  private filterEnglishText<T extends multipleLanguages>(arr: T[]) {
+  private filterEnglishText<T extends MultipleLanguages>(arr: T[]) {
     let englishOnlyArr = arr.filter(ft => { return ft.language.name === this.language })
     return englishOnlyArr;
   }
@@ -226,9 +235,16 @@ export class PokedexService {
 
 }
 
-interface multipleLanguages {
+interface MultipleLanguages {
   language: {
     name: string;
   }
 
+}
+
+interface PokemonApiEmptySearch {
+  count: number;
+  next: string;
+  previous: string;
+  results: PokemonNameAndUrl[];
 }

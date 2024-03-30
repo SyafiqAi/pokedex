@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Pokemon } from '../pokemon';
 import { PokedexService } from '../pokedex.service';
 import { RouterModule } from '@angular/router';
@@ -17,7 +17,13 @@ export class PokemonThumbnailComponent {
   name = '';
   id = '';
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['pokemonName'].currentValue) {
+      this.displayThumbnail()
+    }
+  }
+
+  displayThumbnail() {
     this.pokedexService.getPokemon(this.pokemonName).subscribe(value => {
       this.pokemon = value;
       // this.picUrl = this.pokemon.sprites.other['official-artwork'].front_default;

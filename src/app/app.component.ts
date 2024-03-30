@@ -5,6 +5,7 @@ import { PokemonCardComponent } from './pokemon-card/pokemon-card.component';
 import { PokemonListComponent } from './pokemon-list/pokemon-list.component';
 import { RouterModule } from '@angular/router';
 import { register } from 'swiper/element/bundle';
+import { PokedexService } from './pokedex.service';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,12 @@ import { register } from 'swiper/element/bundle';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+
+  constructor(private pokedexService: PokedexService) { }
+
   title = 'pokédex';
 
-  ngOnInit() {
+  async ngOnInit() {
     register();
   }
 }
