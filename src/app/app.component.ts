@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { register } from 'swiper/element/bundle';
 import { PokedexService } from './pokedex.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import './firebase'
 
 @Component({
   selector: 'app-root',
