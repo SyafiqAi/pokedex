@@ -12,4 +12,5 @@ import { PokemonSearchComponent } from '../pokemon-search/pokemon-search.compone
 })
 export class NavbarComponent {
   title = 'Pokédex';
+  pokeballIcon = `../../assets/pokeball.svg`
 }
