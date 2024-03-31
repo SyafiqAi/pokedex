@@ -3,6 +3,14 @@
     @if (loading) {
         <div class="w-full flex flex-col items-center h-[320px] absolute skew-y-[20deg] origin-right bg-gray-600 animate-pulse">
         </div>
+        <div class="w-[90%] flex flex-col mt-auto">
+            <div class="bg-gray-600 animate-pulse w-full h-6 rounded-3xl mb-2"></div>            
+            <div class="bg-gray-600 animate-pulse w-full h-6 rounded-3xl mb-2"></div>            
+            <div class="bg-gray-600 animate-pulse w-[50%] h-6 rounded-3xl mb-2"></div>            
+        </div>
+        <div class="w-full h-full">
+                <app-pokemon-moves-list [moves]="null"></app-pokemon-moves-list>
+        </div>
     }
     @else {
         <div class="w-full flex flex-col items-center h-[320px] absolute skew-y-[20deg] origin-right" [class]="typeBg">

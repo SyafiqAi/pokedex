@@ -17,7 +17,7 @@ import { PokemonTypeIconComponent } from '../pokemon-type-icon/pokemon-type-icon
 })
 export class PokemonMovesListComponent {
 
-  @Input({ required: true }) moves!: {move: {name: string; url: string;}}[];
+  @Input({ required: true }) moves!: {move: {name: string; url: string;}}[] | null;
   pokemonMoves: PokemonMoveDetails[] | null = null;
 
   loading = true;
@@ -30,7 +30,7 @@ export class PokemonMovesListComponent {
 
   async makeMoveList() {
     this.loading = true;
-    this.pokemonMoves = await this.pokedexService.getPokemonMovesListDetails(this.moves);
+    this.pokemonMoves = await this.pokedexService.getPokemonMovesListDetails(this.moves!);
     this.loading = false;
   }
 
