@@ -13,8 +13,8 @@ import { RouterModule } from '@angular/router';
 export class PokemonThumbnailComponent {
   @Input() pokemonName!:string;
   pokemon: Pokemon | null = null
-  picUrl = ''
-  name = '';
+  picUrl: string | null = null
+  name: string | null = null
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pokemonName'].currentValue) {
