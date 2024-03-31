@@ -65,6 +65,9 @@ export class PokedexService {
   public pokemonGenus(pokemonSpecies: PokemonSpecies) {
     const genera = pokemonSpecies.genera
     const enGenera = this.filterEnglishText(genera)
+    if(enGenera.length == 0) {
+      return ''
+    }
     return enGenera[0].genus;
   }
 
