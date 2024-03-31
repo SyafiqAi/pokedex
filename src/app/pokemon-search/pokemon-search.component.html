@@ -11,7 +11,6 @@
         <input type="text" [(ngModel)]="searchValue" class="w-full bg-black p-6" id="searchInput"
             placeholder="Search for Pokémon">
 
-        @if (filteredList) {
         <div class="overflow-auto h-full">  
             @for (pokemon of filteredList; track $index) {
             <a [routerLink]="['pokemon', pokemon]" (click)="toggleModal(false)">
@@ -21,6 +20,5 @@
             </a>
             }
         </div>
-        }
     </div>
 </div>

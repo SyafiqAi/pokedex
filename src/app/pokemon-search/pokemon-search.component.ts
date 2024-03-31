@@ -23,11 +23,10 @@ export class PokemonSearchComponent {
   showModal = false;
 
 
-  handleInput() {
-    console.log(this.searchValue);
-  }
-
   public get filteredList() {
+    if(this.searchValue == '') {
+      return []
+    }
     const pokemonPerSearch = 10
     const filteredList = this.pokemonList;
     return filteredList.filter(p => p.includes(this.searchValue.toLowerCase())).splice(0,pokemonPerSearch);

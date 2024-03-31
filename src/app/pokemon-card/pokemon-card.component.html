@@ -1,11 +1,11 @@
 <div
-    class="w-[400px] min-h-[680px] relative flex flex-col items-center overflow-hidden border-zinc-900 border-[20px] bg-zinc-900 rounded-[60px] lg:scale-100">
+    class="w-[400px] min-h-[calc(706px)] relative flex flex-col items-center overflow-hidden border-zinc-900 border-[20px] bg-zinc-900 rounded-[60px] lg:scale-100">
     @if (loading) {
-        <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right bg-gray-600 animate-pulse">
+        <div class="w-full flex flex-col items-center h-[320px] absolute skew-y-[20deg] origin-right bg-gray-600 animate-pulse">
         </div>
     }
     @else {
-        <div class="w-full flex flex-col items-center h-[350px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
+        <div class="w-full flex flex-col items-center h-[320px] absolute skew-y-[20deg] origin-right" [class]="typeBg">
         </div>
         <div class="w-full z-10 pt-4 px-8 flex justify-between items-center">
             <div>
@@ -25,11 +25,11 @@
             <p>{{ description }}</p>
         </div>
     
-        <div class="w-full h-full ">
+        <div class="w-full h-full mt-auto">
             @if (moves) {
                 <app-pokemon-moves-list [moves]="moves"></app-pokemon-moves-list>
             }
         </div>
-        <div class="h-1 w-full" [class]="typeBg"></div>
+        <div class="h-1 w-full mt-auto" [class]="typeBg"></div>
     }
 </div>
