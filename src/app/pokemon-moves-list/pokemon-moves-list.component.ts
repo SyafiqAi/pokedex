@@ -20,6 +20,8 @@ export class PokemonMovesListComponent {
   @Input({ required: true }) moves!: {move: {name: string; url: string;}}[];
   pokemonMoves: PokemonMoveDetails[] | null = null;
 
+  loading = true;
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['moves'].currentValue) {
       this.makeMoveList();
@@ -27,7 +29,9 @@ export class PokemonMovesListComponent {
   }
 
   async makeMoveList() {
+    this.loading = true;
     this.pokemonMoves = await this.pokedexService.getPokemonMovesListDetails(this.moves);
+    this.loading = false;
   }
 
   constructor(private pokedexService: PokedexService) { }
