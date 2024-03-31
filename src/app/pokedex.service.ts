@@ -101,23 +101,18 @@ export class PokedexService {
 
   public async getPokemonMovesListDetails(moves: {move: {name: string; url: string;}}[]) {
 
-    const movePromises: Promise<PokemonMove>[] = []
-    
-    moves.forEach(move => {
-      const url = move.move.url;
-      movePromises.push(firstValueFrom(this.getPokemonMove(url)))
-    })
-
-    const allPokemonMoves = await Promise.all(movePromises)
-
     const pokemonMovesListDetails: {type: string; name: string; description: string}[] = []
 
-    allPokemonMoves.forEach(move => {
-      pokemonMovesListDetails.push(this.getMoveDetails(move));
+    moves.forEach(move => {
+      const url = move.move.url;
+      this.getPokemonMove(url).subscribe({
+        next: move => {
+          pokemonMovesListDetails.push(this.getMoveDetails(move));
+        }
+      })
     })
     
     return pokemonMovesListDetails;
-    
   }
 
   getPokemonMove(moveUrl: string) {
