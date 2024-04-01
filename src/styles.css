@@ -4,6 +4,12 @@
 
 
 @layer base {
+    .disable-scrollbar {
+        position: fixed;
+        overflow-y: scroll;
+        width: 100%;
+    }
+
     body {
         @apply bg-black text-white;
 
@@ -27,7 +33,7 @@
     ::-webkit-scrollbar-thumb {
         @apply bg-zinc-800
     }
-    
+
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
         @apply bg-zinc-700

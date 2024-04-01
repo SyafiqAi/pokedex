@@ -24,6 +24,7 @@ export class PokemonSearchComponent {
   searchValue = ''
   showModal = false;
   filteredList: {name: string, url?: string}[] = [];
+  scrollTop: number = 0
 
   public getFilteredList() {
     if(this.searchValue == '') {
@@ -52,6 +53,8 @@ export class PokemonSearchComponent {
 
   toggleModal(show: boolean) {
     this.showModal = show;
+    const disableScroll = show;
+    this.toggleScroll(disableScroll);
 
     // For some reason focusing immediately doesn't work.
     // Have to set a tiny delay.
@@ -66,8 +69,21 @@ export class PokemonSearchComponent {
     }
   }
 
+  toggleScroll(disableScroll: boolean) {
+    const html = document.documentElement;
+    const body = document.body;
+    if(disableScroll) {
+        this.scrollTop = html.scrollTop;
+        body.className = `disable-scrollbar`
+        body.style.top = `-${this.scrollTop}px`
+    } else {
+        body.className = ''
+        html.scrollTop = this.scrollTop;
+    }
+
+  }
+
   onClick(e: Event) {
     e.stopPropagation()
   }
-
 }
