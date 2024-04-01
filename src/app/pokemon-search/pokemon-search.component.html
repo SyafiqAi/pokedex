@@ -6,7 +6,7 @@
 
 <div class="z-50 h-[100vh] w-[100vw] fixed top-0 left-0 bg-black bg-opacity-75" [class]="{hidden:!showModal}"
     (click)="toggleModal(false)">
-    <div class="bg-zinc-900 h-full w-[65vw] lg:w-[50vw] ml-auto" (click)="onClick($event)">
+    <div class="bg-zinc-900 w-[65vw] lg:w-[50vw] ml-auto" (click)="onClick($event)">
 
         <input type="text" [(ngModel)]="searchValue" class="w-full bg-black p-6" id="searchInput"
             placeholder="Search for Pokémon" (input)="getFilteredList()">
