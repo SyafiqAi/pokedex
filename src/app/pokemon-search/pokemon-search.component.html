@@ -9,13 +9,16 @@
     <div class="bg-zinc-900 h-full w-[65vw] lg:w-[50vw] ml-auto" (click)="onClick($event)">
 
         <input type="text" [(ngModel)]="searchValue" class="w-full bg-black p-6" id="searchInput"
-            placeholder="Search for Pokémon">
+            placeholder="Search for Pokémon" (input)="getFilteredList()">
 
         <div class="overflow-auto h-full">  
             @for (pokemon of filteredList; track $index) {
-            <a [routerLink]="['pokemon', pokemon]" (click)="toggleModal(false)">
-                <div class="capitalize p-6 border border-black hover:bg-black last:border-b-2">
-                    {{ pokemon }}
+            <a [routerLink]="['pokemon', pokemon.name]" (click)="toggleModal(false)">
+                <div class="capitalize p-1 border border-black hover:bg-black last:border-b-2">
+                    @if (pokemon.url) {
+                        <img [src]="pokemon.url" [alt]="pokemon.name" class="inline-block h-20">
+                    }
+                    {{ pokemon.name }}
                 </div>
             </a>
             }
