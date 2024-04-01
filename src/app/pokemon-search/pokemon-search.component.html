@@ -4,14 +4,14 @@
         </span>
     </div>
 
-<div class="z-50 h-svh w-[100vw] fixed top-0 left-0 bg-black bg-opacity-75" [class]="{hidden:!showModal}"
+<div class="z-50 h-[100vh] w-[100vw] fixed top-0 left-0 bg-black bg-opacity-75" [class]="{hidden:!showModal}"
     (click)="toggleModal(false)">
     <div class="bg-zinc-900 w-[65vw] lg:w-[50vw] ml-auto" (click)="onClick($event)">
 
         <input type="text" [(ngModel)]="searchValue" class="w-full bg-black p-6" id="searchInput"
             placeholder="Search for Pokémon" (input)="getFilteredList()">
 
-        <div class="overflow-auto h-full">  
+        <div class="overflow-auto max-h-[calc(100dvh-72px)]">  
             @for (pokemon of filteredList; track $index) {
             <a [routerLink]="['pokemon', pokemon.name]" (click)="toggleModal(false)">
                 <div class="capitalize p-1 border border-black hover:bg-black last:border-b-2">

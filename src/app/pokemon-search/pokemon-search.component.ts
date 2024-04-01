@@ -32,7 +32,7 @@ export class PokemonSearchComponent {
       return;
     }
     
-    const pokemonPerSearch = 7
+    const pokemonPerSearch = 10
     let list = this.pokemonList;
     list = list.filter(p => p.includes(this.searchValue.toLowerCase())).splice(0,pokemonPerSearch)
 
