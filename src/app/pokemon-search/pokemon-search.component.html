@@ -12,9 +12,9 @@
             placeholder="Search for Pokémon" (input)="getFilteredList()">
 
         <div class="overflow-auto max-h-[calc(100dvh-72px)]">  
-            @for (pokemon of filteredList; track $index) {
+            @for (pokemon of filteredList; let i = $index; track i) {
             <a [routerLink]="['pokemon', pokemon.name]" (click)="toggleModal(false)">
-                <div class="capitalize p-1 border border-black hover:bg-black last:border-b-2">
+                <div class="capitalize p-1 border border-black hover:bg-zinc-800 last:border-b-2" [ngClass]="{'bg-zinc-800': i == activeIndex}">
                     @if (pokemon.url) {
                         <img [src]="pokemon.url" [alt]="pokemon.name" class="inline-block h-20">
                     }
