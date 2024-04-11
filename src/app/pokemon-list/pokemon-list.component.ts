@@ -42,6 +42,10 @@ export class PokemonListComponent {
     this.pokemonList = await this.pokedexService.getPokemonListByPage(this.currentPage);
   }
 
+  public get totalPages() {
+    return this._totalPages;
+  }
+
   public get isLastPage() {
     return this._isLastPage;
   }

@@ -10,9 +10,10 @@
                 arrow_back_ios
             </span>
         </a>
-        <div class="w-10"></div>
     }
-
+    <div class="text-center flex items-center px-4">
+        {{ currentPage }} / {{ totalPages }}
+    </div>
     @if (!isLastPage) {
         <a routerLink="" [queryParams]="{page: (currentPage+1)}" class="text-3xl">
             <span class="material-symbols-outlined">
